@@ -28,17 +28,20 @@
 
   const API_BASE_URL =
   "https://trustlens-ai-production-38ea.up.railway.app";
-  
+
   const API_ENDPOINTS = Object.freeze({
-    register:
-      `${API_BASE_URL}/api/auth/register`,
+  register:
+    `${API_BASE_URL}/api/auth/register`,
 
-    login:
-      `${API_BASE_URL}/api/auth/login`,
+  login:
+    `${API_BASE_URL}/api/auth/login`,
 
-    me:
-      `${API_BASE_URL}/api/auth/me`
-  });
+  demo:
+    `${API_BASE_URL}/api/auth/demo`,
+
+  me:
+    `${API_BASE_URL}/api/auth/me`
+});
 
 
   const STORAGE_KEYS = Object.freeze({
@@ -1891,32 +1894,123 @@
 
   function initialiseDemoLogin() {
 
-    const button =
-      byId("demoLoginButton");
+  const button =
+    byId("demoLoginButton");
+
+  if (
+    !button ||
+    button.dataset.demoInitialised === "true"
+  ) {
+    return;
+  }
+
+  button.dataset.demoInitialised =
+    "true";
 
 
-    if (!button) {
-      return;
-    }
+  button.addEventListener(
+    "click",
+    async () => {
+
+      const message =
+        byId("loginMessage");
 
 
-    button.addEventListener(
-      "click",
-      () => {
+      showFormMessage(
+        message
+      );
 
-        const message =
-          byId("loginMessage");
+
+      setButtonLoading(
+        button,
+        true,
+        "Opening demo..."
+      );
+
+
+      try {
+
+        const data =
+          await apiRequest(
+            API_ENDPOINTS.demo,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              }
+            }
+          );
+
+
+        if (
+          !data.access_token ||
+          !data.user
+        ) {
+
+          throw new Error(
+            "Demo login response is incomplete."
+          );
+        }
+
+
+        saveAccessToken(
+          data.access_token
+        );
+
+
+        saveCurrentUser(
+          data.user
+        );
 
 
         showFormMessage(
           message,
-          "Demo login will be connected to the backend after the main authentication flow is completed.",
-          "info"
+          "Demo ready. Opening dashboard...",
+          "success"
+        );
+
+
+        window.setTimeout(
+          () => {
+
+            redirectTo(
+              PAGE_URLS.dashboard
+            );
+
+          },
+          400
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Demo login failed:",
+          error
+        );
+
+
+        clearAuthSession();
+
+
+        showFormMessage(
+          message,
+          error.message ||
+            "Unable to start demo session.",
+          "error"
+        );
+
+
+        setButtonLoading(
+          button,
+          false
         );
       }
-    );
-  }
-
+    }
+  );
+}
 
   /* =======================================================
      FORGOT PASSWORD MODAL

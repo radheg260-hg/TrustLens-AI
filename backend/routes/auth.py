@@ -324,6 +324,122 @@ def init_auth_routes(users_collection):
                     "Unable to sign in."
             }), 500
 
+        # ======================================================
+    # DEMO LOGIN
+    # ======================================================
+
+    @auth_bp.route("/demo", methods=["POST"])
+    def demo_login():
+
+        try:
+
+            demo_email = "demo@trustlens.local"
+
+            demo_user = users_collection.find_one({
+                "email": demo_email
+            })
+
+            # Create the demo account automatically
+            # if it does not already exist.
+
+            if not demo_user:
+
+                demo_document = {
+                    "name": "Demo User",
+                    "email": demo_email,
+                    "password_hash": "",
+                    "account_status": "active",
+                    "is_demo": True
+                }
+
+                result = users_collection.insert_one(
+                    demo_document
+                )
+
+                user_id = str(
+                    result.inserted_id
+                )
+
+            else:
+
+                if (
+                    demo_user.get(
+                        "account_status"
+                    ) != "active"
+                ):
+
+                    return jsonify({
+                        "success": False,
+                        "message":
+                            "Demo access is currently unavailable."
+                    }), 403
+
+                user_id = str(
+                    demo_user["_id"]
+                )
+
+
+            access_token = create_access_token(
+                identity=user_id,
+                expires_delta=timedelta(
+                    hours=2
+                )
+            )
+
+
+            return jsonify({
+
+                "success": True,
+
+                "message":
+                    "Demo session started.",
+
+                "access_token":
+                    access_token,
+
+                "user": {
+                    "id":
+                        user_id,
+
+                    "name":
+                        "Demo User",
+
+                    "email":
+                        demo_email,
+
+                    "is_demo":
+                        True
+                }
+
+            }), 200
+
+
+        except PyMongoError as error:
+
+            print(
+                "MongoDB demo-login error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to start demo session."
+            }), 500
+
+
+        except Exception as error:
+
+            print(
+                "Demo-login error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to start demo session."
+            }), 500
 
     @auth_bp.route("/me", methods=["GET"])
     @jwt_required()
