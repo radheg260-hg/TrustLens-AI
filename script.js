@@ -2205,7 +2205,7 @@ async function saveScanToBackend(
 
     response =
       await trustLensAuthenticatedFetch(
-        "http://127.0.0.1:5000/api/scans",
+        "https://trustlens-ai-1dhy.onrender.com",
         {
 
           method:
@@ -2325,7 +2325,7 @@ async function loadScansFromBackend() {
 
     const response =
       await trustLensAuthenticatedFetch(
-        "http://127.0.0.1:5000/api/scans",
+        "https://trustlens-ai-1dhy.onrender.com",
         {
           method: "GET"
         }
@@ -3851,7 +3851,7 @@ if (
 
         const response =
           await trustLensAuthenticatedFetch(
-            "http://127.0.0.1:5000/api/contact",
+            "https://trustlens-ai-1dhy.onrender.com",
             {
               method:
                 "POST",
