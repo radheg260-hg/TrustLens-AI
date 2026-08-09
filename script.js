@@ -2325,7 +2325,7 @@ async function loadScansFromBackend() {
 
     const response =
       await trustLensAuthenticatedFetch(
-        "https://trustlens-ai-1dhy.onrender.com",
+        `${window.TrustLensAuth.apiBaseUrl}/api/scans`,
         {
           method: "GET"
         }
@@ -4111,17 +4111,6 @@ window.addEventListener(
 
     if (
       event.key ===
-      SCAN_STORAGE_KEY
-    ) {
-
-      updateDashboardStatistics();
-
-      displayRecentScans();
-    }
-
-
-    if (
-      event.key ===
       THEME_STORAGE_KEY
     ) {
 
@@ -4130,7 +4119,6 @@ window.addEventListener(
 
   }
 );
-
 
 /* =========================================================
    HASH → SCANNER
@@ -4168,28 +4156,24 @@ if (
 ========================================================= */
 
 window.TrustLensApp =
-  Object.freeze({
+Object.freeze({
 
-    storageKeys: {
-      scans:
-        SCAN_STORAGE_KEY,
+  storageKeys: {
+    theme:
+      THEME_STORAGE_KEY
+  },
 
-      theme:
-        THEME_STORAGE_KEY
-    },
+  getCurrentUser,
 
-    getCurrentUser,
+  getSavedScans,
 
-    getSavedScans,
+  saveScans,
 
-    saveScans,
+  escapeHTML,
 
-    escapeHTML,
+  shortenText
 
-    shortenText
-
-  });
-
+});
 
 /* =========================================================
    FINAL STARTUP COMPATIBILITY
