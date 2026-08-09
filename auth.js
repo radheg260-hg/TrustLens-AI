@@ -27,8 +27,8 @@
   ======================================================= */
 
   const API_BASE_URL =
-    "https://trustlens-ai-1dhy.onrender.com";
-
+  "https://trustlens-ai-production-38ea.up.railway.app";
+  
   const API_ENDPOINTS = Object.freeze({
     register:
       `${API_BASE_URL}/api/auth/register`,
