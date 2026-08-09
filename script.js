@@ -2205,7 +2205,7 @@ async function saveScanToBackend(
 
     response =
       await trustLensAuthenticatedFetch(
-        "https://trustlens-ai-1dhy.onrender.com",
+        `${window.TrustLensAuth.apiBaseUrl}/api/scans`,
         {
 
           method:
