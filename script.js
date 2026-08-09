@@ -1022,7 +1022,7 @@ async function handleAnalyze() {
 
 
       showDashboardMessage(
-        "Analysis completed and securely saved to your account.",
+        "Analysis completed. The scan result was saved to your account.",
         "success"
       );
 
@@ -1784,8 +1784,7 @@ function buildAnalysisResult({
 
   } else {
 
-    title =
-      "Likely Safe";
+    title ="No Major Warning Signals";;
 
     riskLevel =
       "Low Risk";
@@ -2172,7 +2171,7 @@ async function saveScanToBackend(
       "Analysis Result",
 
     original_content:
-      result.originalContent ||
+    
       "",
 
     score:

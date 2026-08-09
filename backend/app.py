@@ -120,8 +120,7 @@ CORS(
         r"/api/*": {
             "origins": [
                 "http://127.0.0.1:5500",
-                "http://localhost:5500",
-                "https://trustlens-ai-ehlg.onrender.com"
+                "http://localhost:5500"
             ]
         }
     }
@@ -438,55 +437,6 @@ def database_test():
 # DATABASE INFO
 # ==========================================================
 
-@app.route(
-    "/api/database-info",
-    methods=[
-        "GET"
-    ]
-)
-def database_info():
-
-    try:
-
-        mongo_client.admin.command(
-            "ping"
-        )
-
-
-        collections = db.list_collection_names()
-
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "database":
-                MONGO_DB_NAME,
-
-            "collections":
-                collections
-
-        }), 200
-
-
-    except PyMongoError as error:
-
-        app.logger.error(
-            "Unable to read database information: %s",
-            error
-        )
-
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "message":
-                "Could not read database information."
-
-        }), 503
 
 
 # ==========================================================
@@ -631,10 +581,18 @@ def internal_server_error(
 # ==========================================================
 # START SERVER
 # ==========================================================
+# ==========================================================
+# INITIALIZE DATABASE
+# ==========================================================
+
+initialize_database()
+
+
+# ==========================================================
+# START LOCAL DEVELOPMENT SERVER
+# ==========================================================
 
 if __name__ == "__main__":
-
-    initialize_database()
 
     app.run(
         host="127.0.0.1",
