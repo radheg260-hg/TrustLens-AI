@@ -120,12 +120,12 @@ CORS(
         r"/api/*": {
             "origins": [
                 "http://127.0.0.1:5500",
-                "http://localhost:5500"
+                "http://localhost:5500",
+                "https://trust-lens-ai-eta.vercel.app"
             ]
         }
     }
 )
-
 
 # ==========================================================
 # RATE LIMITER
