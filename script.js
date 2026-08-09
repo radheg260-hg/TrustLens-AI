@@ -4165,16 +4165,11 @@ Object.freeze({
 
   getCurrentUser,
 
-  getSavedScans,
-
-  saveScans,
-
   escapeHTML,
 
   shortenText
 
 });
-
 /* =========================================================
    FINAL STARTUP COMPATIBILITY
 ========================================================= */
