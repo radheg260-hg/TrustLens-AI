@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Login to TrustLens AI and protect yourself from suspicious messages, links and online fraud."
+    >
+
+    <title>
+        Login | TrustLens AI
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="auth-body">
+
+
+    <main class="auth-layout">
+
+
+        <!-- =================================================
+             LEFT INFORMATION SECTION
+        ================================================== -->
+
+        <section class="auth-showcase">
+
+
+            <!-- Brand -->
+
+            <a
+                href="index.html"
+                class="auth-brand"
+            >
+
+                <div
+                    class="auth-brand-icon"
+                    aria-hidden="true"
+                >
+                    🛡️
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        TrustLens AI
+                    </strong>
+
+                    <span>
+                        Smart Fraud Awareness
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- Main showcase -->
+
+            <div class="auth-showcase-content">
+
+
+                <span class="auth-eyebrow">
+                    AI-POWERED FRAUD AWARENESS
+                </span>
+
+
+                <h1>
+                    Think before you
+                    <span>
+                        click, trust or pay.
+                    </span>
+                </h1>
+
+
+                <p>
+                    Analyze suspicious messages,
+                    website links and screenshots
+                    before taking action.
+                </p>
+
+
+                <div class="auth-feature-list">
+
+
+                    <div class="auth-feature-item">
+
+                        <div
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            💬
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Message Scanner
+                            </strong>
+
+                            <span>
+                                Detect urgency, OTP requests,
+                                payment pressure, impersonation
+                                and threats.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-feature-item">
+
+                        <div
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            🔗
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Website Link Checker
+                            </strong>
+
+                            <span>
+                                Identify suspicious domains,
+                                shortened links and possible
+                                brand impersonation.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-feature-item">
+
+                        <div
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            🖼️
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Screenshot Analysis
+                            </strong>
+
+                            <span>
+                                Extract visible text from
+                                screenshots and analyze common
+                                fraud signals.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Security note -->
+
+            <div class="auth-security-note">
+
+                <span aria-hidden="true">
+                    🔒
+                </span>
+
+                <p>
+                    TrustLens currently uses browser-based
+                    authentication while the secure backend
+                    authentication system is being integrated.
+                </p>
+
+            </div>
+
+
+            <div
+                class="auth-background-decoration auth-decoration-one"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="auth-background-decoration auth-decoration-two"
+                aria-hidden="true"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGIN SECTION
+        ================================================== -->
+
+        <section class="auth-form-section">
+
+
+            <!-- Mobile brand -->
+
+            <div class="auth-mobile-brand">
+
+                <div
+                    class="auth-brand-icon"
+                    aria-hidden="true"
+                >
+                    🛡️
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        TrustLens AI
+                    </strong>
+
+                    <span>
+                        Fraud Awareness Platform
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="auth-form-wrapper">
+
+
+                <!-- Form header -->
+
+                <div class="auth-form-header">
+
+                    <span class="auth-form-badge">
+                        Welcome Back
+                    </span>
+
+
+                    <h2>
+                        Login to your account
+                    </h2>
+
+
+                    <p>
+                        Continue to your TrustLens AI dashboard.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     LOGIN FORM
+                ================================================== -->
+
+                <form
+                    id="loginForm"
+                    class="auth-form"
+                    novalidate
+                >
+
+
+                    <!-- Email -->
+
+                    <div class="auth-field">
+
+
+                        <label for="loginEmail">
+                            Email Address
+                        </label>
+
+
+                        <div class="auth-input-wrapper">
+
+                            <span
+                                class="auth-input-icon"
+                                aria-hidden="true"
+                            >
+                                ✉️
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="loginEmail"
+                                name="email"
+                                placeholder="Enter your email address"
+                                autocomplete="email"
+                                maxlength="100"
+                                required
+                            >
+
+                        </div>
+
+
+                        <small
+                            id="loginEmailError"
+                            class="auth-field-error"
+                            aria-live="polite"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="auth-field">
+
+
+                        <div class="auth-label-row">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+
+                            <button
+                                type="button"
+                                id="forgotPasswordButton"
+                                class="auth-text-button"
+                            >
+                                Forgot password?
+                            </button>
+
+                        </div>
+
+
+                        <div class="auth-input-wrapper">
+
+                            <span
+                                class="auth-input-icon"
+                                aria-hidden="true"
+                            >
+                                🔑
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                id="toggleLoginPassword"
+                                class="password-toggle-button"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                                title="Show password"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+
+                        <small
+                            id="loginPasswordError"
+                            class="auth-field-error"
+                            aria-live="polite"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Remember me -->
+
+                    <div class="auth-options-row">
+
+                        <label class="remember-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                            >
+
+                            <span
+                                class="custom-checkbox"
+                                aria-hidden="true"
+                            ></span>
+
+                            <span>
+                                Remember email
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Main form message -->
+
+                    <div
+                        id="loginMessage"
+                        class="auth-form-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- Login button -->
+
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="auth-submit-button"
+                    >
+
+                        <span
+                            class="button-icon"
+                            aria-hidden="true"
+                        >
+                            🔐
+                        </span>
+
+                        <span class="button-text">
+                            Login Securely
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- =================================================
+                     NEW ACCOUNT
+                ================================================== -->
+
+                <div class="auth-divider">
+
+                    <span>
+                        New to TrustLens AI?
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="signup.html"
+                    class="auth-secondary-link"
+                >
+                    Create a New Account
+                </a>
+
+
+                <!-- =================================================
+                     DEMO LOGIN
+                ================================================== -->
+
+                <div class="demo-login-card">
+
+
+                    <div class="demo-login-heading">
+
+                        <span aria-hidden="true">
+                            ⚡
+                        </span>
+
+
+                        <div>
+
+                            <strong>
+                                Quick Demo
+                            </strong>
+
+                            <p>
+                                Test TrustLens without creating
+                                a personal account.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="demoLoginButton"
+                        class="demo-login-button"
+                    >
+                        Continue as Demo User
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     WARNING
+                ================================================== -->
+
+                <div class="auth-warning">
+
+                    <span aria-hidden="true">
+                        ⚠️
+                    </span>
+
+                    <p>
+                        Never use your actual banking password,
+                        card PIN, CVV or OTP while testing
+                        TrustLens.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer class="auth-footer">
+
+                <p>
+                    © 2026 TrustLens AI
+                </p>
+
+
+                <div>
+
+                    <a href="about.html">
+                        About
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FORGOT PASSWORD MODAL
+    ====================================================== -->
+
+    <div
+        id="forgotPasswordModal"
+        class="auth-modal hidden"
+        aria-hidden="true"
+    >
+
+
+        <div
+            id="forgotPasswordOverlay"
+            class="auth-modal-overlay"
+        ></div>
+
+
+        <div
+            class="auth-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="forgotPasswordTitle"
+        >
+
+
+            <button
+                type="button"
+                id="closeForgotPasswordModal"
+                class="auth-modal-close"
+                aria-label="Close password reset"
+            >
+                ×
+            </button>
+
+
+            <div
+                class="auth-modal-icon"
+                aria-hidden="true"
+            >
+                🔑
+            </div>
+
+
+            <h2 id="forgotPasswordTitle">
+                Reset Password
+            </h2>
+
+
+            <p>
+                Enter your registered email address
+                and create a new password.
+            </p>
+
+
+            <form
+                id="forgotPasswordForm"
+                class="auth-form"
+                novalidate
+            >
+
+
+                <!-- Reset email -->
+
+                <div class="auth-field">
+
+                    <label for="resetEmail">
+                        Registered Email
+                    </label>
+
+
+                    <div class="auth-input-wrapper">
+
+                        <span
+                            class="auth-input-icon"
+                            aria-hidden="true"
+                        >
+                            ✉️
+                        </span>
+
+
+                        <input
+                            type="email"
+                            id="resetEmail"
+                            name="resetEmail"
+                            placeholder="Enter registered email"
+                            autocomplete="email"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <small
+                        id="resetEmailError"
+                        class="auth-field-error"
+                        aria-live="polite"
+                    ></small>
+
+                </div>
+
+
+                <!-- New password -->
+
+                <div class="auth-field">
+
+                    <label for="resetPassword">
+                        New Password
+                    </label>
+
+
+                    <div class="auth-input-wrapper">
+
+                        <span
+                            class="auth-input-icon"
+                            aria-hidden="true"
+                        >
+                            🔒
+                        </span>
+
+
+                        <input
+                            type="password"
+                            id="resetPassword"
+                            name="resetPassword"
+                            placeholder="Create a new password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            id="toggleResetPassword"
+                            class="password-toggle-button"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                            title="Show password"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+
+                    <small
+                        id="resetPasswordError"
+                        class="auth-field-error"
+                        aria-live="polite"
+                    ></small>
+
+                </div>
+
+
+                <!-- Confirm new password -->
+
+                <div class="auth-field">
+
+                    <label for="confirmResetPassword">
+                        Confirm New Password
+                    </label>
+
+
+                    <div class="auth-input-wrapper">
+
+                        <span
+                            class="auth-input-icon"
+                            aria-hidden="true"
+                        >
+                            🔐
+                        </span>
+
+
+                        <input
+                            type="password"
+                            id="confirmResetPassword"
+                            name="confirmResetPassword"
+                            placeholder="Confirm your new password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            id="toggleConfirmResetPassword"
+                            class="password-toggle-button"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                            title="Show password"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+
+                    <small
+                        id="confirmResetPasswordError"
+                        class="auth-field-error"
+                        aria-live="polite"
+                    ></small>
+
+                </div>
+
+
+                <!-- Reset message -->
+
+                <div
+                    id="resetPasswordMessage"
+                    class="auth-form-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- Reset button -->
+
+                <button
+                    type="submit"
+                    id="resetPasswordButton"
+                    class="auth-submit-button"
+                >
+                    Update Password
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="auth.js"></script>
+
+</body>
+
+</html>

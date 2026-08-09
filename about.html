@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Learn how TrustLens AI helps users identify suspicious messages, website links and screenshots."
+    >
+
+    <title>
+        About TrustLens AI
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="dashboard-body about-page-body">
+
+    <!-- =====================================================
+         MOBILE SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+        aria-label="Main navigation"
+    >
+
+        <div class="brand">
+
+            <div
+                class="brand-mark"
+                aria-hidden="true"
+            >
+                🛡️
+            </div>
+
+            <div>
+
+                <h2>
+                    TrustLens
+                </h2>
+
+                <span>
+                    AI Fraud Detector
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="closeSidebarButton"
+            class="sidebar-close-button"
+            aria-label="Close sidebar"
+        >
+            ×
+        </button>
+
+
+        <nav
+            class="sidebar-nav"
+            aria-label="Main navigation"
+        >
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🏠
+                </span>
+
+                Dashboard
+            </a>
+
+
+            <a
+                href="dashboard.html#scannerSection"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🔍
+                </span>
+
+                Fraud Scanner
+            </a>
+
+
+            <a
+                href="history.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🕒
+                </span>
+
+                Scan History
+            </a>
+
+
+            <a
+                href="about.html"
+                class="nav-link active"
+                aria-current="page"
+            >
+                <span aria-hidden="true">
+                    ℹ️
+                </span>
+
+                About
+            </a>
+
+
+            <a
+                href="contact.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    ✉️
+                </span>
+
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-note">
+
+            <strong>
+                🔒 Privacy First
+            </strong>
+
+            <p>
+                Your scans are processed and stored
+                inside your browser in the current
+                frontend version.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="logoutButton"
+            class="logout-button"
+            data-logout
+        >
+            <span aria-hidden="true">
+                🚪
+            </span>
+
+            Logout
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN PAGE
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    id="menuButton"
+                    class="icon-button menu-button"
+                    aria-label="Open navigation menu"
+                >
+                    ☰
+                </button>
+
+
+                <div>
+
+                    <h1>
+                        About TrustLens
+                    </h1>
+
+                    <p>
+                        Learn how TrustLens helps users
+                        recognize online fraud.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    type="button"
+                    id="themeButton"
+                    class="icon-button"
+                    aria-label="Toggle dark mode"
+                    title="Toggle theme"
+                >
+                    🌙
+                </button>
+
+
+                <div class="profile-card">
+
+                    <div
+                        id="userAvatar"
+                        class="user-avatar"
+                        aria-hidden="true"
+                    >
+                        U
+                    </div>
+
+
+                    <div class="profile-text">
+
+                        <strong id="userName">
+                            User
+                        </strong>
+
+                        <span id="userEmail">
+                            user@example.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             ABOUT CONTENT
+        ================================================== -->
+
+        <div class="dashboard-content about-page-content">
+
+
+            <!-- =============================================
+                 HERO
+            ============================================== -->
+
+            <section class="about-hero-card">
+
+                <div class="about-hero-content">
+
+                    <span class="eyebrow">
+                        FRAUD AWARENESS MADE SIMPLE
+                    </span>
+
+
+                    <h2>
+                        Helping people pause, verify
+                        and stay safer online
+                    </h2>
+
+
+                    <p>
+                        TrustLens AI is a fraud-awareness
+                        platform that analyzes suspicious
+                        messages, website links and screenshots.
+                        It highlights common scam signals and
+                        provides simple safety guidance before
+                        users take action.
+                    </p>
+
+
+                    <div class="about-hero-actions">
+
+                        <a
+                            href="dashboard.html#scannerSection"
+                            class="primary-button"
+                        >
+                            <span aria-hidden="true">
+                                🔍
+                            </span>
+
+                            Start a Scan
+                        </a>
+
+
+                        <a
+                            href="contact.html"
+                            class="secondary-button"
+                        >
+                            <span aria-hidden="true">
+                                💬
+                            </span>
+
+                            Contact &amp; Help
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="about-hero-visual"
+                    aria-hidden="true"
+                >
+
+                    <div
+                        class="about-floating-card about-floating-card-one"
+                    >
+                        <span>
+                            ✓
+                        </span>
+
+                        Message checked
+                    </div>
+
+
+                    <div class="about-shield-visual">
+                        🛡️
+                    </div>
+
+
+                    <div
+                        class="about-floating-card about-floating-card-two"
+                    >
+                        <span>
+                            ⚠️
+                        </span>
+
+                        Risk signals found
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 OVERVIEW
+            ============================================== -->
+
+            <section
+                class="about-overview-grid"
+                aria-label="TrustLens capabilities"
+            >
+
+                <article class="about-overview-card">
+
+                    <div
+                        class="about-overview-icon"
+                        aria-hidden="true"
+                    >
+                        💬
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Message Analysis
+                        </h3>
+
+                        <p>
+                            Checks text for urgency,
+                            impersonation, payment demands,
+                            OTP requests and other common
+                            fraud patterns.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="about-overview-card">
+
+                    <div
+                        class="about-overview-icon"
+                        aria-hidden="true"
+                    >
+                        🔗
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Link Inspection
+                        </h3>
+
+                        <p>
+                            Reviews website links for suspicious
+                            domains, misleading brand names and
+                            unsafe-looking URL patterns.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="about-overview-card">
+
+                    <div
+                        class="about-overview-icon"
+                        aria-hidden="true"
+                    >
+                        🖼️
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Screenshot OCR
+                        </h3>
+
+                        <p>
+                            Extracts visible text from screenshots
+                            and analyzes it for possible scam
+                            indicators.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="about-overview-card">
+
+                    <div
+                        class="about-overview-icon"
+                        aria-hidden="true"
+                    >
+                        🔐
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Privacy-Focused Design
+                        </h3>
+
+                        <p>
+                            The current frontend version keeps
+                            scan history inside the browser while
+                            backend database integration is being
+                            added.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =============================================
+                 PROBLEM + SOLUTION
+            ============================================== -->
+
+            <section class="about-problem-solution-section">
+
+
+                <article class="about-problem-card">
+
+                    <span class="eyebrow">
+                        THE PROBLEM
+                    </span>
+
+
+                    <h2>
+                        Online scams are becoming
+                        harder to recognize
+                    </h2>
+
+
+                    <p>
+                        Fraudulent messages increasingly
+                        imitate banks, delivery companies,
+                        government agencies, employers and
+                        trusted brands. They often pressure
+                        users to act before they have time
+                        to verify the request.
+                    </p>
+
+
+                    <ul
+                        class="about-check-list about-problem-list"
+                    >
+
+                        <li>
+
+                            <span>
+                                !
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Urgency and pressure
+                                </strong>
+
+                                <p>
+                                    Scammers use deadlines,
+                                    threats and limited-time
+                                    warnings to prevent careful
+                                    thinking.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+
+                        <li>
+
+                            <span>
+                                !
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Trusted-name impersonation
+                                </strong>
+
+                                <p>
+                                    Fake messages may appear
+                                    to come from banks, police,
+                                    support teams or familiar
+                                    companies.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+
+                        <li>
+
+                            <span>
+                                !
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Payment and data requests
+                                </strong>
+
+                                <p>
+                                    Users may be asked to share
+                                    OTPs, passwords, card details
+                                    or make immediate payments.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </article>
+
+
+                <article class="about-solution-card">
+
+                    <span class="eyebrow">
+                        OUR SOLUTION
+                    </span>
+
+
+                    <h2>
+                        A simple first-check
+                        before taking action
+                    </h2>
+
+
+                    <p>
+                        TrustLens helps users slow down and
+                        examine suspicious content. It turns
+                        common fraud-warning patterns into
+                        clear risk scores, explanations and
+                        practical safety guidance.
+                    </p>
+
+
+                    <ul
+                        class="about-check-list about-solution-list"
+                    >
+
+                        <li>
+
+                            <span>
+                                ✓
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Quick risk assessment
+                                </strong>
+
+                                <p>
+                                    Users receive a clear score
+                                    and risk category after each
+                                    scan.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+
+                        <li>
+
+                            <span>
+                                ✓
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Understandable reasons
+                                </strong>
+
+                                <p>
+                                    TrustLens explains which
+                                    warning signs contributed
+                                    to the result.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+
+                        <li>
+
+                            <span>
+                                ✓
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Practical next steps
+                                </strong>
+
+                                <p>
+                                    Each result provides simple
+                                    recommendations to help users
+                                    respond more safely.
+                                </p>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </article>
+
+            </section>
+
+
+            <!-- =============================================
+                 HOW IT WORKS
+            ============================================== -->
+
+            <section class="about-section-card">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            HOW IT WORKS
+                        </span>
+
+                        <h2>
+                            From suspicious content
+                            to a clearer decision
+                        </h2>
+
+                    </div>
+
+
+                    <p>
+                        TrustLens follows a simple four-step
+                        process designed for users without
+                        technical cybersecurity knowledge.
+                    </p>
+
+                </div>
+
+
+                <div class="about-steps-grid">
+
+                    <article class="about-step-card">
+
+                        <span class="about-step-number">
+                            01
+                        </span>
+
+                        <div
+                            class="about-step-icon"
+                            aria-hidden="true"
+                        >
+                            📥
+                        </div>
+
+                        <h3>
+                            Add suspicious content
+                        </h3>
+
+                        <p>
+                            Paste a message, enter a website
+                            link or upload a screenshot that
+                            you want to check.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-step-card">
+
+                        <span class="about-step-number">
+                            02
+                        </span>
+
+                        <div
+                            class="about-step-icon"
+                            aria-hidden="true"
+                        >
+                            🔎
+                        </div>
+
+                        <h3>
+                            Analyze warning signals
+                        </h3>
+
+                        <p>
+                            TrustLens searches for patterns
+                            such as urgency, impersonation,
+                            suspicious payments and unsafe
+                            wording.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-step-card">
+
+                        <span class="about-step-number">
+                            03
+                        </span>
+
+                        <div
+                            class="about-step-icon"
+                            aria-hidden="true"
+                        >
+                            📊
+                        </div>
+
+                        <h3>
+                            Review the result
+                        </h3>
+
+                        <p>
+                            A risk score, category and list
+                            of detected signals are presented
+                            in a clear report.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-step-card">
+
+                        <span class="about-step-number">
+                            04
+                        </span>
+
+                        <div
+                            class="about-step-icon"
+                            aria-hidden="true"
+                        >
+                            🛡️
+                        </div>
+
+                        <h3>
+                            Take safer action
+                        </h3>
+
+                        <p>
+                            Follow the recommended precautions
+                            and independently verify the sender
+                            before responding.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FEATURES
+            ============================================== -->
+
+            <section class="about-section-card">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            CORE FEATURES
+                        </span>
+
+                        <h2>
+                            Designed for practical
+                            fraud awareness
+                        </h2>
+
+                    </div>
+
+
+                    <p>
+                        Every feature focuses on making
+                        suspicious digital communication
+                        easier to understand.
+                    </p>
+
+                </div>
+
+
+                <div class="about-features-grid">
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            💬
+                        </div>
+
+                        <h3>
+                            Text fraud detection
+                        </h3>
+
+                        <p>
+                            Detects common language patterns
+                            used in phishing messages, fake
+                            offers and payment scams.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            🌐
+                        </div>
+
+                        <h3>
+                            Suspicious URL checks
+                        </h3>
+
+                        <p>
+                            Reviews domain structure, unusual
+                            wording and other warning patterns
+                            in website links.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            👁️
+                        </div>
+
+                        <h3>
+                            Screenshot text extraction
+                        </h3>
+
+                        <p>
+                            Uses OCR technology to read text
+                            from uploaded screenshots before
+                            analyzing it.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            📈
+                        </div>
+
+                        <h3>
+                            Risk scoring
+                        </h3>
+
+                        <p>
+                            Converts detected signals into
+                            an easy-to-read percentage and
+                            risk category.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            🧾
+                        </div>
+
+                        <h3>
+                            Scan history
+                        </h3>
+
+                        <p>
+                            Saves previous results so users
+                            can review and compare earlier
+                            scans.
+                        </p>
+
+                    </article>
+
+
+                    <article class="about-feature-card">
+
+                        <div
+                            class="about-feature-icon"
+                            aria-hidden="true"
+                        >
+                            💡
+                        </div>
+
+                        <h3>
+                            Safety recommendations
+                        </h3>
+
+                        <p>
+                            Provides practical guidance based
+                            on the type and severity of the
+                            detected warning signs.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 PRIVACY
+            ============================================== -->
+
+            <section class="about-privacy-card">
+
+                <div
+                    class="about-privacy-icon"
+                    aria-hidden="true"
+                >
+                    🔐
+                </div>
+
+
+                <div class="about-privacy-content">
+
+                    <span class="eyebrow">
+                        PRIVACY BY DESIGN
+                    </span>
+
+
+                    <h2>
+                        Building toward secure
+                        full-stack storage
+                    </h2>
+
+
+                    <p>
+                        TrustLens started as a browser-based
+                        educational project using local storage.
+                        The current development phase is adding
+                        Flask, MongoDB and JWT authentication
+                        so accounts and scan history can be
+                        managed securely through the backend.
+                    </p>
+
+
+                    <div class="about-privacy-points">
+
+                        <div>
+                            <span>
+                                ✓
+                            </span>
+
+                            <p>
+                                User-specific data
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                ✓
+                            </span>
+
+                            <p>
+                                Secure backend authentication
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                ✓
+                            </span>
+
+                            <p>
+                                MongoDB database integration
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                ✓
+                            </span>
+
+                            <p>
+                                User-controlled scan history
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 LIMITATIONS
+            ============================================== -->
+
+            <section class="about-limitations-card">
+
+                <div
+                    class="about-limitations-icon"
+                    aria-hidden="true"
+                >
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <span class="eyebrow">
+                        IMPORTANT LIMITATIONS
+                    </span>
+
+
+                    <h2>
+                        TrustLens supports decisions,
+                        but does not replace verification
+                    </h2>
+
+
+                    <p>
+                        The current detection engine uses
+                        browser-based rules and pattern
+                        matching. It can identify common
+                        warning signals, but it cannot
+                        guarantee that content is completely
+                        safe or fraudulent.
+                    </p>
+
+
+                    <ul>
+
+                        <li>
+                            A low-risk result does not
+                            guarantee that a message or
+                            website is safe.
+                        </li>
+
+                        <li>
+                            New or sophisticated scams may
+                            not match existing detection rules.
+                        </li>
+
+                        <li>
+                            OCR results can contain errors
+                            when screenshots are unclear or
+                            text is too small.
+                        </li>
+
+                        <li>
+                            Users should verify suspicious
+                            requests through official websites,
+                            apps or phone numbers.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TECHNOLOGY
+            ============================================== -->
+
+            <section class="about-section-card">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TECHNOLOGY
+                        </span>
+
+                        <h2>
+                            Built with modern
+                            web technologies
+                        </h2>
+
+                    </div>
+
+
+                    <p>
+                        TrustLens combines a responsive
+                        frontend with a growing Flask and
+                        MongoDB backend architecture.
+                    </p>
+
+                </div>
+
+
+                <div class="about-tech-grid">
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            🌐
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                HTML5
+                            </h3>
+
+                            <p>
+                                Provides semantic structure
+                                for pages, forms, navigation
+                                and scan reports.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            🎨
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                CSS3
+                            </h3>
+
+                            <p>
+                                Creates the responsive dashboard,
+                                modern cards, dark mode and
+                                mobile layouts.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            ⚙️
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                JavaScript
+                            </h3>
+
+                            <p>
+                                Handles scanning, interaction,
+                                history and frontend behavior.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            👁️
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Tesseract.js
+                            </h3>
+
+                            <p>
+                                Extracts readable text from
+                                uploaded screenshot images.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            🐍
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Flask
+                            </h3>
+
+                            <p>
+                                Provides the backend API,
+                                authentication routes and
+                                server-side processing.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-tech-card">
+
+                        <span aria-hidden="true">
+                            🍃
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                MongoDB
+                            </h3>
+
+                            <p>
+                                Stores user accounts,
+                                scan history and future
+                                contact records.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 MISSION
+            ============================================== -->
+
+            <section class="about-mission-card">
+
+                <div class="about-mission-content">
+
+                    <span class="eyebrow">
+                        OUR MISSION
+                    </span>
+
+
+                    <h2>
+                        Make online fraud awareness
+                        easier for everyone
+                    </h2>
+
+
+                    <p>
+                        TrustLens aims to help people build
+                        the habit of pausing before clicking,
+                        paying or sharing sensitive information.
+                        The project focuses on practical education,
+                        clear explanations and simple preventive
+                        actions.
+                    </p>
+
+                </div>
+
+
+                <blockquote class="about-mission-quote">
+
+                    <span aria-hidden="true">
+                        “
+                    </span>
+
+                    <p>
+                        The safest click is the one
+                        you verify before you make it.
+                    </p>
+
+                </blockquote>
+
+            </section>
+
+
+            <!-- =============================================
+                 CTA
+            ============================================== -->
+
+            <section class="about-cta-card">
+
+                <div>
+
+                    <span class="eyebrow">
+                        CHECK BEFORE YOU TRUST
+                    </span>
+
+
+                    <h2>
+                        Have something suspicious
+                        you want to verify?
+                    </h2>
+
+
+                    <p>
+                        Open the TrustLens scanner and
+                        review warning signals before
+                        replying, clicking a link or
+                        making a payment.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="dashboard.html#scannerSection"
+                    class="primary-button"
+                >
+                    <span aria-hidden="true">
+                        🔍
+                    </span>
+
+                    Start a Scan
+                </a>
+
+            </section>
+
+
+            <!-- =============================================
+                 SAFETY NOTICE
+            ============================================== -->
+
+            <section class="safety-card">
+
+                <div aria-hidden="true">
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Important safety notice
+                    </h3>
+
+
+                    <p>
+                        Never share OTPs, PINs, CVVs,
+                        passwords or complete banking
+                        details with unknown people.
+                        Verify urgent requests using
+                        an official website, application
+                        or trusted phone number.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FOOTER
+            ============================================== -->
+
+            <footer class="dashboard-footer">
+
+                © 2026 TrustLens AI.
+                Built for fraud awareness and education.
+
+            </footer>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

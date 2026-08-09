@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="TrustLens AI dashboard for checking suspicious messages, website links and screenshots for common online fraud signals."
+    >
+
+    <title>
+        TrustLens AI | Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="dashboard-body">
+
+    <!-- =====================================================
+         MOBILE SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+        aria-label="Main navigation"
+    >
+
+        <div class="brand">
+
+            <div
+                class="brand-mark"
+                aria-hidden="true"
+            >
+                🛡️
+            </div>
+
+            <div>
+                <h2>TrustLens</h2>
+
+                <span>
+                    AI Fraud Detector
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- Mobile sidebar close button -->
+
+        <button
+            type="button"
+            id="closeSidebarButton"
+            class="sidebar-close-button"
+            aria-label="Close navigation menu"
+        >
+            ×
+        </button>
+
+
+        <nav
+            class="sidebar-nav"
+            aria-label="Dashboard navigation"
+        >
+
+            <a
+                href="dashboard.html"
+                class="nav-link active"
+                aria-current="page"
+            >
+                <span aria-hidden="true">
+                    🏠
+                </span>
+
+                Dashboard
+            </a>
+
+
+            <a
+                href="#scannerSection"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🔍
+                </span>
+
+                Fraud Scanner
+            </a>
+
+
+            <a
+                href="history.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🕒
+                </span>
+
+                Scan History
+            </a>
+
+
+            <a
+                href="about.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    ℹ️
+                </span>
+
+                About
+            </a>
+
+
+            <a
+                href="contact.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    ✉️
+                </span>
+
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-note">
+
+            <strong>
+                Stay protected
+            </strong>
+
+            <p>
+                Never share OTP, PIN, CVV or passwords
+                with unknown people.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="logoutButton"
+            class="logout-button"
+            data-logout
+        >
+            <span aria-hidden="true">
+                🚪
+            </span>
+
+            Logout
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    id="menuButton"
+                    class="icon-button menu-button"
+                    aria-label="Open navigation menu"
+                >
+                    ☰
+                </button>
+
+
+                <div>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Check suspicious content before
+                        you trust it.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    type="button"
+                    id="themeButton"
+                    class="icon-button"
+                    aria-label="Toggle dark mode"
+                    title="Toggle theme"
+                >
+                    🌙
+                </button>
+
+
+                <div class="profile-card">
+
+                    <div
+                        id="userAvatar"
+                        class="user-avatar"
+                        aria-hidden="true"
+                    >
+                        U
+                    </div>
+
+
+                    <div class="profile-text">
+
+                        <strong id="userName">
+                            User
+                        </strong>
+
+                        <span id="userEmail">
+                            user@example.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD CONTENT
+        ================================================== -->
+
+        <div class="dashboard-content">
+
+
+            <!-- =============================================
+                 WELCOME HERO
+            ============================================== -->
+
+            <section class="hero-card">
+
+                <div class="hero-content">
+
+                    <span class="eyebrow">
+                        SMART FRAUD AWARENESS
+                    </span>
+
+
+                    <h2 id="welcomeText">
+                        Welcome back!
+                    </h2>
+
+
+                    <p>
+                        Analyze suspicious messages, website
+                        links and screenshots before clicking,
+                        replying, sharing information or making
+                        a payment.
+                    </p>
+
+
+                    <a
+                        href="#scannerSection"
+                        class="primary-link"
+                    >
+                        Start a New Scan
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="hero-visual"
+                    aria-hidden="true"
+                >
+                    🔐
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 DASHBOARD STATISTICS
+            ============================================== -->
+
+            <section
+                class="stats-grid"
+                aria-label="Scan statistics"
+            >
+
+                <article class="stat-card">
+
+                    <div
+                        class="stat-icon stat-blue"
+                        aria-hidden="true"
+                    >
+                        🔍
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Scans
+                        </span>
+
+                        <strong id="totalScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div
+                        class="stat-icon stat-red"
+                        aria-hidden="true"
+                    >
+                        ⚠️
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Fraud Alerts
+                        </span>
+
+                        <strong id="fraudScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div
+                        class="stat-icon stat-green"
+                        aria-hidden="true"
+                    >
+                        ✅
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Safe Results
+                        </span>
+
+                        <strong id="safeScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =============================================
+                 FRAUD SCANNER
+            ============================================== -->
+
+            <section
+                id="scannerSection"
+                class="scanner-card"
+            >
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TRUSTLENS SCANNER
+                        </span>
+
+                        <h2>
+                            Start a New Scan
+                        </h2>
+
+                        <p>
+                            Choose the type of suspicious
+                            content you want to analyze.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     SCANNER TABS
+                ========================================== -->
+
+                <div
+                    class="scanner-tabs"
+                    role="tablist"
+                    aria-label="Scanner type"
+                >
+
+                    <button
+                        type="button"
+                        class="scan-tab active"
+                        data-type="message"
+                        data-scan-type="message"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="messagePanel"
+                    >
+                        <span aria-hidden="true">
+                            💬
+                        </span>
+
+                        Message
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="scan-tab"
+                        data-type="link"
+                        data-scan-type="link"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="linkPanel"
+                    >
+                        <span aria-hidden="true">
+                            🔗
+                        </span>
+
+                        Website Link
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="scan-tab"
+                        data-type="screenshot"
+                        data-scan-type="screenshot"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="screenshotPanel"
+                    >
+                        <span aria-hidden="true">
+                            🖼️
+                        </span>
+
+                        Screenshot
+                    </button>
+
+                </div>
+
+
+                <!-- =========================================
+                     MESSAGE PANEL
+                ========================================== -->
+
+                <div
+                    id="messagePanel"
+                    class="scan-panel active"
+                    role="tabpanel"
+                >
+
+                    <label for="messageInput">
+                        Paste a suspicious message
+                    </label>
+
+
+                    <textarea
+                        id="messageInput"
+                        maxlength="5000"
+                        placeholder="Example: Your bank account will be blocked today. Click the link immediately and share your OTP to verify your account..."
+                    ></textarea>
+
+
+                    <div class="field-meta">
+
+                        <span>
+                            Checks urgency, OTP requests,
+                            payment pressure, threats,
+                            impersonation and suspicious links.
+                        </span>
+
+
+                        <span id="messageCount">
+                            0 characters
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     WEBSITE LINK PANEL
+                ========================================== -->
+
+                <div
+                    id="linkPanel"
+                    class="scan-panel"
+                    role="tabpanel"
+                >
+
+                    <label for="linkInput">
+                        Enter a website link
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="linkInput"
+                        placeholder="https://example.com"
+                        autocomplete="off"
+                        inputmode="url"
+                    >
+
+
+                    <p class="field-help">
+                        Checks HTTPS, shortened URLs,
+                        suspicious domain patterns,
+                        risky extensions and possible
+                        brand impersonation.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================================
+                     SCREENSHOT PANEL
+                ========================================== -->
+
+                <div
+                    id="screenshotPanel"
+                    class="scan-panel"
+                    role="tabpanel"
+                >
+
+                    <label
+                        for="screenshotInput"
+                        id="uploadBox"
+                        class="upload-box"
+                    >
+
+                        <input
+                            type="file"
+                            id="screenshotInput"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                        >
+
+
+                        <div
+                            class="upload-icon"
+                            aria-hidden="true"
+                        >
+                            📤
+                        </div>
+
+
+                        <h3>
+                            Upload a screenshot
+                        </h3>
+
+
+                        <p>
+                            Upload a clear WhatsApp, SMS,
+                            email, payment or website
+                            screenshot.
+                        </p>
+
+
+                        <span class="upload-button-text">
+                            Choose Image
+                        </span>
+
+                    </label>
+
+
+                    <!-- Selected image information -->
+
+                    <div
+                        id="selectedFileInfo"
+                        class="selected-file-info hidden"
+                    >
+
+                        <div class="selected-file-left">
+
+                            <span
+                                class="file-icon"
+                                aria-hidden="true"
+                            >
+                                🖼️
+                            </span>
+
+
+                            <div>
+
+                                <strong id="selectedFileName">
+                                    Screenshot
+                                </strong>
+
+                                <small id="selectedFileSize">
+                                    Image file
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="removeScreenshotButton"
+                            class="danger-outline-button"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+
+                    <!-- Screenshot preview -->
+
+                    <img
+                        id="screenshotPreview"
+                        class="screenshot-preview"
+                        alt="Uploaded screenshot preview"
+                    >
+
+
+                    <!-- OCR Progress -->
+
+                    <div
+                        id="ocrProgressSection"
+                        class="ocr-progress-section hidden"
+                        aria-live="polite"
+                    >
+
+                        <div class="ocr-progress-header">
+
+                            <span id="ocrStatusText">
+                                Preparing screenshot reader...
+                            </span>
+
+
+                            <strong id="ocrProgressPercentage">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="ocr-progress-track"
+                            role="progressbar"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0"
+                        >
+
+                            <div
+                                id="ocrProgressBar"
+                                class="ocr-progress-bar"
+                            ></div>
+
+                        </div>
+
+
+                        <p>
+                            TrustLens is reading visible text
+                            inside your screenshot.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Extracted OCR text -->
+
+                    <div
+                        id="extractedTextSection"
+                        class="extracted-text-section hidden"
+                    >
+
+                        <div class="extracted-text-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    OCR RESULT
+                                </span>
+
+                                <h3>
+                                    Extracted Text
+                                </h3>
+
+                                <p>
+                                    Review the detected text
+                                    before analyzing it.
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="editExtractedTextButton"
+                                class="secondary-button"
+                            >
+                                Edit Text
+                            </button>
+
+                        </div>
+
+
+                        <textarea
+                            id="extractedText"
+                            rows="8"
+                            readonly
+                            placeholder="Detected screenshot text will appear here."
+                        ></textarea>
+
+
+                        <p class="field-help">
+                            OCR may make mistakes. Correct
+                            extracted text when necessary
+                            before analyzing it.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     SCANNER MESSAGE
+                ========================================== -->
+
+                <div
+                    id="dashboardMessage"
+                    class="form-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- =========================================
+                     ANALYZE BUTTON
+                ========================================== -->
+
+                <button
+                    type="button"
+                    id="analyzeButton"
+                    class="analyze-button"
+                >
+
+                    <span aria-hidden="true">
+                        💬
+                    </span>
+
+                    <span>
+                        Analyze Message
+                    </span>
+
+                </button>
+
+            </section>
+
+
+            <!-- =============================================
+                 SCANNER LOADING PANEL
+            ============================================== -->
+
+            <section
+                id="scanLoadingPanel"
+                class="scan-loading-panel hidden"
+                aria-hidden="true"
+                aria-live="polite"
+            >
+
+                <div class="scan-loading-card">
+
+
+                    <div
+                        class="scan-loading-animation"
+                        aria-hidden="true"
+                    >
+
+                        <div class="scanner-circle">
+
+                            <div class="scanner-line"></div>
+
+                            <span class="scanner-icon">
+                                🛡️
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="scan-loading-content">
+
+                        <span class="scan-loading-label">
+                            TrustLens AI Scanner
+                        </span>
+
+
+                        <h3 id="scanLoadingText">
+                            Reading the submitted content...
+                        </h3>
+
+
+                        <p>
+                            TrustLens is checking fraud
+                            patterns and security signals.
+                        </p>
+
+
+                        <div
+                            class="scan-loading-progress"
+                            role="progressbar"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0"
+                        >
+
+                            <div
+                                id="scanProgressBar"
+                                class="scan-loading-progress-bar"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="scan-loading-steps">
+
+                            <div
+                                class="scan-loading-step"
+                                data-scan-step="1"
+                            >
+                                <span>
+                                    1
+                                </span>
+
+                                <p>
+                                    Reading content
+                                </p>
+                            </div>
+
+
+                            <div
+                                class="scan-loading-step"
+                                data-scan-step="2"
+                            >
+                                <span>
+                                    2
+                                </span>
+
+                                <p>
+                                    Checking signals
+                                </p>
+                            </div>
+
+
+                            <div
+                                class="scan-loading-step"
+                                data-scan-step="3"
+                            >
+                                <span>
+                                    3
+                                </span>
+
+                                <p>
+                                    Risk calculation
+                                </p>
+                            </div>
+
+
+                            <div
+                                class="scan-loading-step"
+                                data-scan-step="4"
+                            >
+                                <span>
+                                    4
+                                </span>
+
+                                <p>
+                                    Preparing report
+                                </p>
+                            </div>
+
+
+                            <div
+                                class="scan-loading-step"
+                                data-scan-step="5"
+                            >
+                                <span>
+                                    5
+                                </span>
+
+                                <p>
+                                    Completed
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 ANALYSIS RESULT
+            ============================================== -->
+
+            <section
+                id="resultSection"
+                class="result-card hidden"
+                aria-live="polite"
+            >
+
+                <div class="result-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TRUSTLENS ANALYSIS
+                        </span>
+
+
+                        <h2 id="resultTitle">
+                            Analysis Result
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        id="riskScore"
+                        class="risk-score"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="progress-track risk-track">
+
+                    <div
+                        id="riskProgressBar"
+                        class="progress-fill"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                    ></div>
+
+                </div>
+
+
+                <p
+                    id="resultDescription"
+                    class="result-description"
+                >
+                    Your result will appear here.
+                </p>
+
+
+                <div class="result-grid">
+
+
+                    <div class="result-box">
+
+                        <h3>
+                            Why TrustLens flagged this
+                        </h3>
+
+
+                        <ul id="resultReasons">
+
+                            <li>
+                                No reasons yet.
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="result-box advice-box">
+
+                        <h3>
+                            Recommended Action
+                        </h3>
+
+
+                        <p id="safetyAdvice">
+                            Safety advice will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analysis-summary">
+
+
+                    <div>
+
+                        <span>
+                            Scan Type
+                        </span>
+
+                        <strong id="resultScanType">
+                            Message
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Risk Level
+                        </span>
+
+                        <strong id="resultRiskLevel">
+                            Low Risk
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Signals Found
+                        </span>
+
+                        <strong id="signalsFound">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 RECENT SCANS
+            ============================================== -->
+
+            <section class="recent-card">
+
+                <div class="section-header split-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACTIVITY
+                        </span>
+
+                        <h2>
+                            Recent Scans
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="history.html"
+                        class="text-link"
+                    >
+                        View Full History
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="recentScans"
+                    class="recent-scans-list"
+                    aria-live="polite"
+                >
+
+                    <div class="empty-state">
+
+                        <div
+                            class="empty-state-icon"
+                            aria-hidden="true"
+                        >
+                            📂
+                        </div>
+
+
+                        <h3>
+                            No scans yet
+                        </h3>
+
+
+                        <p>
+                            Your latest results will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SAFETY NOTICE
+            ============================================== -->
+
+            <section class="safety-card">
+
+                <div aria-hidden="true">
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Important safety notice
+                    </h3>
+
+
+                    <p>
+                        TrustLens provides fraud-awareness
+                        guidance and automated risk estimates.
+                        A low-risk result does not guarantee
+                        complete safety. Never share OTP,
+                        PIN, CVV, passwords or confidential
+                        banking details with unknown people.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FOOTER
+            ============================================== -->
+
+            <footer class="dashboard-footer">
+
+                © 2026 TrustLens AI.
+                Built for fraud awareness and education.
+
+            </footer>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <!-- Authentication must load before shared dashboard JS -->
+    <script src="auth.js"></script>
+
+
+    <!-- OCR library must load before script.js -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"
+    ></script>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

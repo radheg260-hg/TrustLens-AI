@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Review and manage previous TrustLens AI fraud-analysis results."
+    >
+
+    <title>
+        Scan History | TrustLens AI
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="dashboard-body history-page-body">
+
+    <!-- =====================================================
+         MOBILE SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+        aria-label="Main navigation"
+    >
+
+        <div class="brand">
+
+            <div
+                class="brand-mark"
+                aria-hidden="true"
+            >
+                🛡️
+            </div>
+
+            <div>
+
+                <h2>
+                    TrustLens
+                </h2>
+
+                <span>
+                    AI Fraud Detector
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="closeSidebarButton"
+            class="sidebar-close-button"
+            aria-label="Close navigation menu"
+        >
+            ×
+        </button>
+
+
+        <nav
+            class="sidebar-nav"
+            aria-label="Dashboard navigation"
+        >
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🏠
+                </span>
+
+                Dashboard
+            </a>
+
+
+            <a
+                href="dashboard.html#scannerSection"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    🔍
+                </span>
+
+                Fraud Scanner
+            </a>
+
+
+            <a
+                href="history.html"
+                class="nav-link active"
+                aria-current="page"
+            >
+                <span aria-hidden="true">
+                    🕒
+                </span>
+
+                Scan History
+            </a>
+
+
+            <a
+                href="about.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    ℹ️
+                </span>
+
+                About
+            </a>
+
+
+            <a
+                href="contact.html"
+                class="nav-link"
+            >
+                <span aria-hidden="true">
+                    ✉️
+                </span>
+
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-note">
+
+            <strong>
+                🔒 Your Activity
+            </strong>
+
+            <p>
+                Review previous TrustLens scans
+                and remove records you no longer need.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="logoutButton"
+            class="logout-button"
+            data-logout
+        >
+            <span aria-hidden="true">
+                🚪
+            </span>
+
+            Logout
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN PAGE
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    id="menuButton"
+                    class="icon-button menu-button"
+                    aria-label="Open navigation menu"
+                >
+                    ☰
+                </button>
+
+
+                <div>
+
+                    <h1>
+                        Scan History
+                    </h1>
+
+                    <p>
+                        Review and manage your previous
+                        TrustLens analyses.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    type="button"
+                    id="themeButton"
+                    class="icon-button"
+                    aria-label="Toggle dark mode"
+                    title="Toggle theme"
+                >
+                    🌙
+                </button>
+
+
+                <div class="profile-card">
+
+                    <div
+                        id="userAvatar"
+                        class="user-avatar"
+                        aria-hidden="true"
+                    >
+                        U
+                    </div>
+
+
+                    <div class="profile-text">
+
+                        <strong id="userName">
+                            User
+                        </strong>
+
+                        <span id="userEmail">
+                            user@example.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HISTORY PAGE CONTENT
+        ================================================== -->
+
+        <div class="dashboard-content history-page-content">
+
+
+            <!-- =============================================
+                 HERO
+            ============================================== -->
+
+            <section class="history-hero-card">
+
+                <div class="history-hero-content">
+
+                    <span class="eyebrow">
+                        TRUSTLENS RECORDS
+                    </span>
+
+
+                    <h2>
+                        Your fraud-analysis activity
+                    </h2>
+
+
+                    <p>
+                        Search, filter and review previously
+                        analyzed messages, website links and
+                        screenshots.
+                    </p>
+
+
+                    <a
+                        href="dashboard.html#scannerSection"
+                        class="primary-button"
+                    >
+                        <span aria-hidden="true">
+                            🔍
+                        </span>
+
+                        Start a New Scan
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="history-hero-visual"
+                    aria-hidden="true"
+                >
+                    🗂️
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 HISTORY CONTROLS
+            ============================================== -->
+
+            <section class="history-controls-card">
+
+                <div class="history-controls-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SCAN RECORDS
+                        </span>
+
+
+                        <h2>
+                            Previous Results
+                        </h2>
+
+
+                        <p>
+                            Search your saved scans or filter
+                            them by risk level and scan type.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="clearHistoryButton"
+                        class="danger-outline-button history-clear-button"
+                    >
+                        Clear History
+                    </button>
+
+                </div>
+
+
+                <div class="history-filter-grid">
+
+
+                    <!-- Search -->
+
+                    <div class="history-search-field">
+
+                        <label for="historySearchInput">
+                            Search
+                        </label>
+
+
+                        <div class="history-input-wrapper">
+
+                            <span
+                                class="history-input-icon"
+                                aria-hidden="true"
+                            >
+                                🔍
+                            </span>
+
+
+                            <input
+                                type="search"
+                                id="historySearchInput"
+                                placeholder="Search content, results or warning signals..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Filter -->
+
+                    <div class="history-filter-field">
+
+                        <label for="historyFilter">
+                            Filter Results
+                        </label>
+
+
+                        <select
+                            id="historyFilter"
+                            aria-label="Filter scan history"
+                        >
+
+                            <option value="all">
+                                All Scans
+                            </option>
+
+                            <option value="high">
+                                High Risk
+                            </option>
+
+                            <option value="suspicious">
+                                Suspicious
+                            </option>
+
+                            <option value="safe">
+                                Low Risk
+                            </option>
+
+                            <option value="message">
+                                Messages
+                            </option>
+
+                            <option value="link">
+                                Website Links
+                            </option>
+
+                            <option value="screenshot">
+                                Screenshots
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Result count -->
+
+                    <div class="history-filter-field">
+
+                        <label>
+                            Results
+                        </label>
+
+
+                        <div
+                            id="historyResultCount"
+                            class="history-result-count"
+                            aria-live="polite"
+                        >
+                            0 scans
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 HISTORY LIST
+            ============================================== -->
+
+            <section class="history-list-card">
+
+                <div class="section-header split-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACTIVITY
+                        </span>
+
+
+                        <h2>
+                            Scan History
+                        </h2>
+
+
+                        <p>
+                            Select a scan to view the complete
+                            analysis report.
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="dashboard.html#scannerSection"
+                        class="text-link"
+                    >
+                        New Scan
+                    </a>
+
+                </div>
+
+
+                <!-- Empty state -->
+
+                <div
+                    id="historyEmptyState"
+                    class="empty-state history-empty-state hidden"
+                >
+
+                    <div
+                        class="empty-state-icon"
+                        aria-hidden="true"
+                    >
+                        📂
+                    </div>
+
+
+                    <h3>
+                        No scan history yet
+                    </h3>
+
+
+                    <p>
+                        Your completed TrustLens analyses
+                        will appear here.
+                    </p>
+
+
+                    <a
+                        href="dashboard.html#scannerSection"
+                        class="primary-link"
+                    >
+                        Analyze Content
+                    </a>
+
+                </div>
+
+
+                <!-- JS inserts history cards here -->
+
+                <div
+                    id="historyList"
+                    class="history-list"
+                    aria-live="polite"
+                    aria-busy="false"
+                ></div>
+
+            </section>
+
+
+            <!-- =============================================
+                 BACKEND TRANSITION NOTICE
+            ============================================== -->
+
+            <section class="safety-card">
+
+                <div aria-hidden="true">
+                    🔐
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        User-specific scan history
+                    </h3>
+
+
+                    <p>
+                        TrustLens currently supports
+                        user-specific browser history.
+                        MongoDB-backed scan storage will
+                        be connected during the backend phase.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SAFETY NOTICE
+            ============================================== -->
+
+            <section class="safety-card">
+
+                <div aria-hidden="true">
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Remember
+                    </h3>
+
+
+                    <p>
+                        A low-risk TrustLens result does not
+                        guarantee complete safety. Always
+                        independently verify unfamiliar senders,
+                        websites and payment requests.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FOOTER
+            ============================================== -->
+
+            <footer class="dashboard-footer">
+
+                © 2026 TrustLens AI.
+                Built for fraud awareness and education.
+
+            </footer>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         SCAN DETAILS MODAL
+    ====================================================== -->
+
+    <div
+        id="historyDetailsModal"
+        class="history-modal"
+        aria-hidden="true"
+    >
+
+        <!-- Modal overlay -->
+
+        <div
+            id="historyModalOverlay"
+            class="history-modal-overlay"
+        ></div>
+
+
+        <!-- Modal content card -->
+
+        <div
+            class="history-modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="historyModalHeading"
+        >
+
+
+            <div class="history-modal-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        TRUSTLENS REPORT
+                    </span>
+
+
+                    <h2 id="historyModalHeading">
+                        Scan Details
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeHistoryModalButton"
+                    class="history-modal-close"
+                    aria-label="Close scan details"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!--
+                history.js replaces this content
+                when a scan is opened.
+            -->
+
+            <div id="historyModalContent">
+
+                <p>
+                    Select a saved scan to view
+                    its complete analysis.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CLEAR HISTORY CONFIRMATION MODAL
+    ====================================================== -->
+
+    <div
+        id="historyConfirmModal"
+        class="history-confirm-modal"
+        aria-hidden="true"
+    >
+
+        <div
+            id="historyConfirmOverlay"
+            class="history-confirm-overlay"
+        ></div>
+
+
+        <div
+            class="history-confirm-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="clearHistoryModalTitle"
+        >
+
+            <div
+                class="history-confirm-icon"
+                aria-hidden="true"
+            >
+                ⚠️
+            </div>
+
+
+            <h2 id="clearHistoryModalTitle">
+                Clear Scan History?
+            </h2>
+
+
+            <p>
+                This will permanently remove all
+                scan records associated with your
+                current TrustLens account from the
+                current history storage.
+            </p>
+
+
+            <div class="history-confirm-warning">
+
+                <span aria-hidden="true">
+                    🗑️
+                </span>
+
+                <p>
+                    This action cannot be undone.
+                </p>
+
+            </div>
+
+
+            <div class="history-confirm-actions">
+
+                <button
+                    type="button"
+                    id="cancelClearHistoryButton"
+                    class="secondary-button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    id="confirmClearHistoryButton"
+                    class="danger-button"
+                >
+                    Clear History
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <!-- Backend-ready JWT authentication -->
+    <script src="auth.js"></script>
+
+
+    <!-- Shared dashboard/profile/theme/sidebar logic -->
+    <script src="script.js"></script>
+
+
+    <!-- History-specific rendering and modal logic -->
+    <script src="history.js"></script>
+
+</body>
+
+</html>
