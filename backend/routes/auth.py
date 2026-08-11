@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta, timezone
 import hashlib
 import secrets
-
+import os
+import resend
 import bcrypt
 
 from bson import ObjectId
@@ -19,6 +20,10 @@ auth_bp = Blueprint(
     __name__,
     url_prefix="/api/auth"
 )
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
 
 
 def init_auth_routes(users_collection):
@@ -516,10 +521,49 @@ def init_auth_routes(users_collection):
             # TEMPORARY DEVELOPMENT OUTPUT.
             # We will remove this once email delivery
             # is connected.
-            print(
-                f"TrustLens password reset code for {email}: "
-                f"{reset_code}"
-            )
+            if not RESEND_API_KEY:
+                raise RuntimeError(
+                     "RESEND_API_KEY is not configured."
+    )
+
+            resend.Emails.send({
+    "from": "TrustLens <onboarding@resend.dev>",
+    "to": [email],
+    "subject": "Your TrustLens password reset code",
+    "html": f"""
+        <div style="font-family: Arial, sans-serif;">
+            <h2>TrustLens Password Reset</h2>
+
+            <p>
+                We received a request to reset your
+                TrustLens password.
+            </p>
+
+            <p>Your verification code is:</p>
+
+            <h1 style="letter-spacing: 6px;">
+                {reset_code}
+            </h1>
+
+            <p>
+                This code expires in 10 minutes.
+            </p>
+
+            <p>
+                If you did not request a password reset,
+                you can ignore this email.
+            </p>
+
+            <p>
+                Never share this code with anyone.
+            </p>
+
+            <p>
+                — TrustLens AI
+            </p>
+        </div>
+    """
+})
 
             return jsonify({
                 "success": True,
