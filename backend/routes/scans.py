@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 import re
+
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (
@@ -8,10 +9,12 @@ from flask_jwt_extended import (
 )
 from pymongo.errors import PyMongoError
 
+from services.ai_service import analyze_message_with_ai
+
 
 # ==========================================================
 # TRUSTLENS AI — SCAN ROUTES
-# Phase 2.4
+# Phase 3 — AI Enhanced
 # ==========================================================
 
 scans_bp = Blueprint(
@@ -72,6 +75,22 @@ def serialize_scan(scan):
             ""
         ),
 
+        # ----------------------------------------------
+        # AI METADATA
+        # ----------------------------------------------
+
+        "ai_analysis": scan.get(
+            "ai_analysis",
+            {
+                "used": False,
+                "classification": None,
+                "score": None,
+                "confidence": None,
+                "summary": "",
+                "reasons": []
+            }
+        ),
+
         "created_at": (
             scan.get(
                 "created_at"
@@ -99,9 +118,16 @@ def get_authenticated_user_id():
         user_id
     )
 
+
+# ==========================================================
+# REDACT SENSITIVE CONTENT BEFORE DATABASE STORAGE
+# ==========================================================
+
 def redact_sensitive_content(content):
 
-    text = str(content or "")
+    text = str(
+        content or ""
+    )
 
     # OTP / verification code
     text = re.sub(
@@ -143,6 +169,54 @@ def redact_sensitive_content(content):
     )
 
     return text.strip()
+
+
+# ==========================================================
+# REMOVE DUPLICATE REASONS
+# ==========================================================
+
+def unique_reasons(reasons):
+
+    result = []
+    seen = set()
+
+    for reason in reasons:
+
+        clean_reason = str(
+            reason
+        ).strip()
+
+        if not clean_reason:
+            continue
+
+        key = clean_reason.lower()
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        result.append(
+            clean_reason
+        )
+
+    return result
+
+
+# ==========================================================
+# CALCULATE RISK LEVEL
+# ==========================================================
+
+def calculate_risk_level(score):
+
+    if score >= 70:
+        return "High Risk"
+
+    if score >= 40:
+        return "Suspicious"
+
+    return "Low Risk"
+
+
 # ==========================================================
 # INITIALIZE ROUTES
 # ==========================================================
@@ -165,6 +239,10 @@ def init_scan_routes(
 
         try:
 
+            # ----------------------------------------------
+            # AUTHENTICATED USER
+            # ----------------------------------------------
+
             user_id = (
                 get_authenticated_user_id()
             )
@@ -177,6 +255,10 @@ def init_scan_routes(
                         "Invalid user session."
                 }), 401
 
+
+            # ----------------------------------------------
+            # REQUEST DATA
+            # ----------------------------------------------
 
             data = (
                 request.get_json(
@@ -328,6 +410,254 @@ def init_scan_routes(
             ]
 
 
+            # ==================================================
+            # GEMINI AI ENHANCEMENT
+            #
+            # IMPORTANT:
+            # Gemini currently enhances MESSAGE scans only.
+            #
+            # Link and screenshot scans continue using the
+            # existing TrustLens analysis without modification.
+            #
+            # If Gemini fails, ai_services.py returns a safe
+            # fallback and the scan still succeeds.
+            # ==================================================
+
+            ai_metadata = {
+                "used": False,
+                "classification": None,
+                "score": None,
+                "confidence": None,
+                "summary": "",
+                "reasons": []
+            }
+
+
+            if scan_type == "message":
+
+                ai_result = (
+                    analyze_message_with_ai(
+                        original_content
+                    )
+                )
+
+
+                if ai_result.get(
+                    "ai_available"
+                ):
+
+                    # ------------------------------------------
+                    # NORMALIZED AI VALUES
+                    # ------------------------------------------
+
+                    ai_score = ai_result.get(
+                        "ai_score",
+                        score
+                    )
+
+                    ai_confidence = ai_result.get(
+                        "confidence",
+                        0
+                    )
+
+
+                    try:
+
+                        ai_score = int(
+                            ai_score
+                        )
+
+                    except (
+                        TypeError,
+                        ValueError
+                    ):
+
+                        ai_score = score
+
+
+                    try:
+
+                        ai_confidence = int(
+                            ai_confidence
+                        )
+
+                    except (
+                        TypeError,
+                        ValueError
+                    ):
+
+                        ai_confidence = 0
+
+
+                    ai_score = max(
+                        0,
+                        min(
+                            ai_score,
+                            100
+                        )
+                    )
+
+
+                    ai_confidence = max(
+                        0,
+                        min(
+                            ai_confidence,
+                            100
+                        )
+                    )
+
+
+                    # ------------------------------------------
+                    # COMBINE RULE ENGINE + GEMINI
+                    # ------------------------------------------
+                    #
+                    # High-confidence Gemini:
+                    # 40% rules + 60% AI
+                    #
+                    # Lower-confidence Gemini:
+                    # 70% rules + 30% AI
+                    # ------------------------------------------
+
+                    if ai_confidence >= 70:
+
+                        score = round(
+                            (score * 0.40)
+                            +
+                            (ai_score * 0.60)
+                        )
+
+                    else:
+
+                        score = round(
+                            (score * 0.70)
+                            +
+                            (ai_score * 0.30)
+                        )
+
+
+                    score = max(
+                        0,
+                        min(
+                            score,
+                            100
+                        )
+                    )
+
+
+                    # ------------------------------------------
+                    # FINAL RISK LEVEL
+                    # ------------------------------------------
+
+                    risk_level = (
+                        calculate_risk_level(
+                            score
+                        )
+                    )
+
+
+                    # ------------------------------------------
+                    # AI REASONS
+                    # ------------------------------------------
+
+                    ai_reasons = (
+                        ai_result.get(
+                            "reasons",
+                            []
+                        )
+                    )
+
+
+                    if not isinstance(
+                        ai_reasons,
+                        list
+                    ):
+
+                        ai_reasons = []
+
+
+                    ai_reasons = [
+                        str(reason).strip()
+                        for reason
+                        in ai_reasons
+                        if str(reason).strip()
+                    ]
+
+
+                    reasons.extend(
+                        ai_reasons
+                    )
+
+
+                    reasons = (
+                        unique_reasons(
+                            reasons
+                        )
+                    )
+
+
+                    # ------------------------------------------
+                    # AI SAFETY ADVICE
+                    # ------------------------------------------
+
+                    ai_advice = str(
+                        ai_result.get(
+                            "safety_advice",
+                            ""
+                        )
+                    ).strip()
+
+
+                    if ai_advice:
+
+                        advice = (
+                            ai_advice
+                        )
+
+
+                    # ------------------------------------------
+                    # SAVE AI METADATA
+                    # ------------------------------------------
+
+                    ai_metadata = {
+
+                        "used":
+                            True,
+
+                        "classification":
+                            ai_result.get(
+                                "classification"
+                            ),
+
+                        "score":
+                            ai_score,
+
+                        "confidence":
+                            ai_confidence,
+
+                        "summary":
+                            str(
+                                ai_result.get(
+                                    "summary",
+                                    ""
+                                )
+                            ).strip(),
+
+                        "reasons":
+                            ai_reasons
+                    }
+
+
+            # ----------------------------------------------
+            # FINAL REASON CLEANUP
+            # ----------------------------------------------
+
+            reasons = (
+                unique_reasons(
+                    reasons
+                )
+            )
+
+
             # ----------------------------------------------
             # CREATE DOCUMENT
             # ----------------------------------------------
@@ -343,6 +673,9 @@ def init_scan_routes(
                 "title":
                     title,
 
+                # Original input is used for analysis,
+                # but sensitive values are redacted
+                # BEFORE MongoDB storage.
                 "original_content":
                     redact_sensitive_content(
                         original_content
@@ -360,12 +693,19 @@ def init_scan_routes(
                 "advice":
                     advice,
 
+                "ai_analysis":
+                    ai_metadata,
+
                 "created_at":
                     datetime.now(
                         timezone.utc
                     )
             }
 
+
+            # ----------------------------------------------
+            # SAVE TO MONGODB
+            # ----------------------------------------------
 
             result = (
                 scans_collection
@@ -384,14 +724,21 @@ def init_scan_routes(
             )
 
 
+            # ----------------------------------------------
+            # RESPONSE
+            # ----------------------------------------------
+
             return jsonify({
                 "success": True,
+
                 "message":
                     "Scan saved successfully.",
+
                 "scan":
                     serialize_scan(
                         created_scan
                     )
+
             }), 201
 
 
@@ -477,6 +824,7 @@ def init_scan_routes(
                     for scan
                     in scans
                 ]
+
             }), 200
 
 
@@ -579,6 +927,7 @@ def init_scan_routes(
                     serialize_scan(
                         scan
                     )
+
             }), 200
 
 
@@ -757,6 +1106,7 @@ def init_scan_routes(
 
                 "deleted_count":
                     result.deleted_count
+
             }), 200
 
 
