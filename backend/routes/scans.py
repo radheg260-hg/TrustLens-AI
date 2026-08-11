@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-
+import re
 from bson import ObjectId
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (
@@ -99,7 +99,50 @@ def get_authenticated_user_id():
         user_id
     )
 
+def redact_sensitive_content(content):
 
+    text = str(content or "")
+
+    # OTP / verification code
+    text = re.sub(
+        r'(?i)\b(otp|verification code|one time password)\b'
+        r'(\s*(?:is|:|-)?\s*)\d{4,8}\b',
+        r'\1\2[REDACTED]',
+        text
+    )
+
+    # CVV
+    text = re.sub(
+        r'(?i)\b(cvv|cvc)\b'
+        r'(\s*(?:is|:|-)?\s*)\d{3,4}\b',
+        r'\1\2[REDACTED]',
+        text
+    )
+
+    # PIN
+    text = re.sub(
+        r'(?i)\b(pin|upi pin|atm pin)\b'
+        r'(\s*(?:is|:|-)?\s*)\d{4,6}\b',
+        r'\1\2[REDACTED]',
+        text
+    )
+
+    # Password-like values
+    text = re.sub(
+        r'(?i)\b(password|passcode)\b'
+        r'(\s*(?:is|:|-)?\s*)[^\s,.;]{4,}',
+        r'\1\2[REDACTED]',
+        text
+    )
+
+    # Long card/account-like numbers
+    text = re.sub(
+        r'\b(?:\d[\s-]?){12,19}\b',
+        '[REDACTED NUMBER]',
+        text
+    )
+
+    return text.strip()
 # ==========================================================
 # INITIALIZE ROUTES
 # ==========================================================
@@ -301,7 +344,9 @@ def init_scan_routes(
                     title,
 
                 "original_content":
-                    original_content,
+                    redact_sensitive_content(
+                        original_content
+                    ),
 
                 "score":
                     score,
