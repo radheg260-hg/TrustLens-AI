@@ -364,7 +364,7 @@
       );
 
       throw new Error(
-        "Cannot connect to TrustLens backend. Make sure Flask is running."
+        "Cannot connect to TrustLens. please try again shortly."
       );
     }
 
