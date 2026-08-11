@@ -25,7 +25,9 @@
      CONFIGURATION
   ======================================================= */
 
-  const API_BASE_URL ="https://trustlens-ai-production-38ea.up.railway.app";;
+  const API_BASE_URL =
+  window.TrustLensAuth?.apiBaseUrl ||
+  "https://trustlens-ai-production-38ea.up.railway.app";
 
 
   const API_ENDPOINTS = Object.freeze({
