@@ -2171,8 +2171,7 @@ async function saveScanToBackend(
       "Analysis Result",
 
     original_content:
-    
-      "",
+      String(result.originalContent || "").trim(),
 
     score:
       Number(
@@ -2234,7 +2233,7 @@ async function saveScanToBackend(
 
 
     throw new Error(
-      "Could not connect to the TrustLens backend. Make sure python app.py is running."
+      "Could not connect to the TrustLens backend. Please try again."
     );
   }
 
