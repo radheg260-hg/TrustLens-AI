@@ -1,4 +1,6 @@
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
+import hashlib
+import secrets
 
 import bcrypt
 
@@ -439,6 +441,115 @@ def init_auth_routes(users_collection):
                 "success": False,
                 "message":
                     "Unable to start demo session."
+            }), 500
+        # ======================================================
+    # FORGOT PASSWORD
+    # ======================================================
+
+    @auth_bp.route("/forgot-password", methods=["POST"])
+    def forgot_password():
+
+        try:
+            data = request.get_json(silent=True) or {}
+
+            email = str(
+                data.get("email", "")
+            ).strip().lower()
+
+            if not email:
+                return jsonify({
+                    "success": False,
+                    "message": "Email address is required."
+                }), 400
+
+            user = users_collection.find_one({
+                "email": email
+            })
+
+            # Do not reveal whether an email is registered.
+            generic_message = (
+                "If an account exists with this email, "
+                "a password reset code will be sent."
+            )
+
+            if not user:
+                return jsonify({
+                    "success": True,
+                    "message": generic_message
+                }), 200
+
+            # Demo account must never be reset.
+            if user.get("is_demo", False):
+                return jsonify({
+                    "success": True,
+                    "message": generic_message
+                }), 200
+
+            reset_code = str(
+                secrets.randbelow(900000) + 100000
+            )
+
+            reset_code_hash = hashlib.sha256(
+                reset_code.encode("utf-8")
+            ).hexdigest()
+
+            expires_at = (
+                datetime.now(timezone.utc) +
+                timedelta(minutes=10)
+            )
+
+            users_collection.update_one(
+                {
+                    "_id": user["_id"]
+                },
+                {
+                    "$set": {
+                        "password_reset_code_hash":
+                            reset_code_hash,
+
+                        "password_reset_expires_at":
+                            expires_at
+                    }
+                }
+            )
+
+            # TEMPORARY DEVELOPMENT OUTPUT.
+            # We will remove this once email delivery
+            # is connected.
+            print(
+                f"TrustLens password reset code for {email}: "
+                f"{reset_code}"
+            )
+
+            return jsonify({
+                "success": True,
+                "message": generic_message
+            }), 200
+
+        except PyMongoError as error:
+
+            print(
+                "MongoDB forgot-password error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to process password reset."
+            }), 500
+
+        except Exception as error:
+
+            print(
+                "Forgot-password error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to process password reset."
             }), 500
 
     @auth_bp.route("/me", methods=["GET"])
