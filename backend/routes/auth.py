@@ -335,76 +335,89 @@ def init_auth_routes(users_collection):
     # DEMO LOGIN
     # ======================================================
 
+        # ======================================================
+    # ISOLATED DEMO LOGIN
+    # ======================================================
+
     @auth_bp.route("/demo", methods=["POST"])
     def demo_login():
 
         try:
 
-            demo_email = "demo@trustlens.local"
+            # Every demo session gets its own
+            # temporary MongoDB user.
 
-            demo_user = users_collection.find_one({
-                "email": demo_email
-            })
+            demo_token = secrets.token_hex(8)
 
-            # Create the demo account automatically
-            # if it does not already exist.
+            demo_email = (
+                f"demo-{demo_token}"
+                "@trustlens.local"
+            )
 
-            if not demo_user:
+            demo_document = {
 
-                demo_document = {
-                    "name": "Demo User",
-                    "email": demo_email,
-                    "password_hash": "",
-                    "account_status": "active",
-                    "is_demo": True
-                }
+                "name":
+                    "Demo User",
 
-                result = users_collection.insert_one(
+                "email":
+                    demo_email,
+
+                "password_hash":
+                    "",
+
+                "account_status":
+                    "active",
+
+                "is_demo":
+                    True,
+
+                "created_at":
+                    datetime.now(
+                        timezone.utc
+                    )
+            }
+
+
+            result = (
+                users_collection
+                .insert_one(
                     demo_document
                 )
-
-                user_id = str(
-                    result.inserted_id
-                )
-
-            else:
-
-                if (
-                    demo_user.get(
-                        "account_status"
-                    ) != "active"
-                ):
-
-                    return jsonify({
-                        "success": False,
-                        "message":
-                            "Demo access is currently unavailable."
-                    }), 403
-
-                user_id = str(
-                    demo_user["_id"]
-                )
+            )
 
 
-            access_token = create_access_token(
-                identity=user_id,
-                expires_delta=timedelta(
-                    hours=2
+            user_id = str(
+                result.inserted_id
+            )
+
+
+            access_token = (
+                create_access_token(
+
+                    identity=
+                        user_id,
+
+                    expires_delta=
+                        timedelta(
+                            hours=2
+                        )
                 )
             )
 
 
             return jsonify({
 
-                "success": True,
+                "success":
+                    True,
 
                 "message":
-                    "Demo session started.",
+                    "Private demo session started.",
 
                 "access_token":
                     access_token,
 
                 "user": {
+
                     "id":
                         user_id,
 
@@ -412,7 +425,7 @@ def init_auth_routes(users_collection):
                         "Demo User",
 
                     "email":
-                        demo_email,
+                        "demo@trustlens.local",
 
                     "is_demo":
                         True
@@ -429,7 +442,9 @@ def init_auth_routes(users_collection):
             )
 
             return jsonify({
-                "success": False,
+                "success":
+                    False,
+
                 "message":
                     "Unable to start demo session."
             }), 500
@@ -443,7 +458,9 @@ def init_auth_routes(users_collection):
             )
 
             return jsonify({
-                "success": False,
+                "success":
+                    False,
+
                 "message":
                     "Unable to start demo session."
             }), 500
