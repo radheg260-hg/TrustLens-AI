@@ -896,6 +896,10 @@ if (analyzeButton) {
    MAIN ANALYSIS CONTROLLER
 ========================================================= */
 
+/* =========================================================
+   MAIN ANALYSIS CONTROLLER
+========================================================= */
+
 async function handleAnalyze() {
 
   if (
@@ -905,24 +909,21 @@ async function handleAnalyze() {
     return;
   }
 
-
   clearDashboardMessage();
 
   let result = null;
-
 
   try {
 
     isAnalysisRunning = true;
 
     if (analyzeButton) {
-
       analyzeButton.disabled = true;
     }
 
 
     /* =====================================================
-       RUN ANALYSIS
+       RUN LOCAL ANALYSIS FIRST
     ===================================================== */
 
     if (
@@ -931,11 +932,9 @@ async function handleAnalyze() {
     ) {
 
       if (analyzeButton) {
-
         analyzeButton.innerHTML =
           "<span>⏳</span>Analyzing Message...";
       }
-
 
       result =
         analyzeMessage();
@@ -947,11 +946,9 @@ async function handleAnalyze() {
     ) {
 
       if (analyzeButton) {
-
         analyzeButton.innerHTML =
           "<span>⏳</span>Analyzing Link...";
       }
-
 
       result =
         analyzeWebsiteLink();
@@ -961,6 +958,11 @@ async function handleAnalyze() {
       selectedScanType ===
       "screenshot"
     ) {
+
+      if (analyzeButton) {
+        analyzeButton.innerHTML =
+          "<span>⏳</span>Analyzing Screenshot...";
+      }
 
       result =
         await analyzeScreenshot();
@@ -972,40 +974,57 @@ async function handleAnalyze() {
     ===================================================== */
 
     if (!result) {
-
       return;
     }
 
 
     /* =====================================================
-       SHOW RESULT
-    ===================================================== */
-
-    renderAnalysisResult(
-      result
-    );
-
-
-    /* =====================================================
-       SAVE TO MONGODB
+       SAVE TO BACKEND
+       Backend may improve result using AI
     ===================================================== */
 
     try {
 
-      await saveScanToBackend(
-        result
+      const savedScan =
+        await saveScanToBackend(
+          result
+        );
+
+
+      console.log(
+        "Final backend scan:",
+        savedScan
       );
 
 
-      /*
-        IMPORTANT:
-        After MongoDB saves the scan,
-        reload the user's scans directly
-        from the backend.
+      /* ===================================================
+         IMPORTANT:
+         Convert the exact saved backend scan into the
+         format expected by the dashboard result card.
 
-        No localStorage scan mirror is
-        needed for dashboard statistics.
-      */
+         This makes Dashboard + Recent Scans + History
+         use the SAME MongoDB result.
+      =================================================== */
+
+      const finalResult =
+        convertBackendScanToResult(
+          savedScan,
+          result
+        );
+
+
+      /* ===================================================
+         RENDER FINAL BACKEND RESULT
+      =================================================== */
+
+      renderAnalysisResult(
+        finalResult
+      );
+
+
+      /* ===================================================
+         RELOAD MONGODB SCANS
+      =================================================== */
 
       const scans =
         await loadScansFromBackend();
@@ -1022,7 +1041,7 @@ async function handleAnalyze() {
 
 
       showDashboardMessage(
-        "Analysis completed. The scan result was saved to your account.",
+        "Analysis completed and securely saved to your account.",
         "success"
       );
 
@@ -1032,6 +1051,16 @@ async function handleAnalyze() {
       console.error(
         "TrustLens scan save error:",
         saveError
+      );
+
+
+      /*
+         If backend fails completely,
+         show local analysis instead.
+      */
+
+      renderAnalysisResult(
+        result
       );
 
 
@@ -1063,7 +1092,6 @@ async function handleAnalyze() {
 
 
     if (analyzeButton) {
-
       analyzeButton.disabled =
         false;
     }
@@ -1071,6 +1099,300 @@ async function handleAnalyze() {
 
     updateAnalyzeButtonText();
   }
+}
+
+
+/* =========================================================
+   CONVERT BACKEND SCAN → DASHBOARD RESULT
+
+   MongoDB/backend uses:
+   scan_type
+   risk_level
+   original_content
+   ai_analysis
+
+   Dashboard uses:
+   scanType
+   riskLevel
+   originalContent
+   resultClass
+========================================================= */
+
+function convertBackendScanToResult(
+  scan,
+  fallbackResult = {}
+) {
+
+  const score =
+    Math.max(
+      0,
+      Math.min(
+        Number(
+          scan?.score ??
+          fallbackResult?.score ??
+          0
+        ),
+        100
+      )
+    );
+
+
+  const backendType =
+    String(
+      scan?.scan_type ||
+      fallbackResult?.scanType ||
+      "message"
+    )
+      .trim()
+      .toLowerCase();
+
+
+  let scanType =
+    "Message";
+
+
+  if (
+    backendType.includes("link") ||
+    backendType.includes("website")
+  ) {
+
+    scanType =
+      "Website Link";
+
+  } else if (
+    backendType.includes("screenshot") ||
+    backendType.includes("image")
+  ) {
+
+    scanType =
+      "Screenshot";
+  }
+
+
+  /* =====================================================
+     REASONS
+  ===================================================== */
+
+  let reasons =
+    Array.isArray(scan?.reasons)
+      ? scan.reasons.filter(Boolean)
+      : [];
+
+
+  if (
+    reasons.length === 0 &&
+    Array.isArray(
+      scan?.ai_analysis?.reasons
+    )
+  ) {
+
+    reasons =
+      scan.ai_analysis.reasons
+        .filter(Boolean);
+  }
+
+
+  if (
+    reasons.length === 0 &&
+    Array.isArray(
+      fallbackResult?.reasons
+    )
+  ) {
+
+    reasons =
+      fallbackResult.reasons
+        .filter(Boolean);
+  }
+
+
+  /* =====================================================
+     RISK LEVEL
+  ===================================================== */
+
+  let riskLevel =
+    String(
+      scan?.risk_level ||
+      scan?.ai_analysis?.classification ||
+      fallbackResult?.riskLevel ||
+      ""
+    )
+      .trim();
+
+
+  if (!riskLevel) {
+
+    if (score >= 60) {
+
+      riskLevel =
+        "High Risk";
+
+    } else if (score >= 25) {
+
+      riskLevel =
+        "Suspicious";
+
+    } else {
+
+      riskLevel =
+        "Low Risk";
+    }
+  }
+
+
+  /* =====================================================
+     TITLE
+  ===================================================== */
+
+  let title =
+    String(
+      scan?.title ||
+      fallbackResult?.title ||
+      ""
+    )
+      .trim();
+
+
+  if (!title) {
+
+    if (score >= 60) {
+
+      title =
+        "High Fraud Risk";
+
+    } else if (score >= 25) {
+
+      if (
+        scanType ===
+        "Website Link"
+      ) {
+
+        title =
+          "Suspicious Website Link";
+
+      } else if (
+        scanType ===
+        "Screenshot"
+      ) {
+
+        title =
+          "Suspicious Screenshot";
+
+      } else {
+
+        title =
+          "Suspicious Message";
+      }
+
+    } else {
+
+      title =
+        "No Major Warning Signals";
+    }
+  }
+
+
+  /* =====================================================
+     DESCRIPTION
+  ===================================================== */
+
+  let description =
+    String(
+      scan?.description ||
+      scan?.ai_analysis?.summary ||
+      fallbackResult?.description ||
+      ""
+    )
+      .trim();
+
+
+  if (!description) {
+
+    if (score >= 60) {
+
+      description =
+        "Several strong fraud warning signals were detected. Do not take action until the content has been independently verified.";
+
+    } else if (score >= 25) {
+
+      description =
+        "Some warning signs were detected. Verify the content before taking action.";
+
+    } else {
+
+      description =
+        "No major fraud pattern was detected by the current analysis.";
+    }
+  }
+
+
+  /* =====================================================
+     ADVICE
+  ===================================================== */
+
+  const advice =
+    String(
+      scan?.advice ||
+      scan?.ai_analysis?.advice ||
+      fallbackResult?.advice ||
+      (
+        score >= 25
+          ? "Use an official app, website or verified contact number before proceeding."
+          : "Remain cautious. Automated checking cannot guarantee complete safety."
+      )
+    )
+      .trim();
+
+
+  /* =====================================================
+     RESULT CSS CLASS
+  ===================================================== */
+
+  let resultClass =
+    "safe-result";
+
+
+  if (score >= 60) {
+
+    resultClass =
+      "danger-result";
+
+  } else if (score >= 25) {
+
+    resultClass =
+      "warning-result";
+  }
+
+
+  return {
+
+    scanType,
+
+    originalContent:
+      String(
+        scan?.original_content ||
+        fallbackResult?.originalContent ||
+        ""
+      ),
+
+    score,
+
+    reasons,
+
+    title,
+
+    description,
+
+    advice,
+
+    riskLevel,
+
+    resultClass,
+
+    aiAnalysis:
+      scan?.ai_analysis ||
+      null
+
+  };
 }
 
 /* =========================================================
