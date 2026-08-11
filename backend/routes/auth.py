@@ -551,6 +551,200 @@ def init_auth_routes(users_collection):
                 "message":
                     "Unable to process password reset."
             }), 500
+        # ======================================================
+    # RESET PASSWORD
+    # ======================================================
+
+    @auth_bp.route("/reset-password", methods=["POST"])
+    def reset_password():
+
+        try:
+            data = request.get_json(silent=True) or {}
+
+            email = str(
+                data.get("email", "")
+            ).strip().lower()
+
+            code = str(
+                data.get("code", "")
+            ).strip()
+
+            new_password = str(
+                data.get("new_password", "")
+            )
+
+            if not email or not code or not new_password:
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Email, reset code and new password are required."
+                }), 400
+
+            if (
+                len(code) != 6 or
+                not code.isdigit()
+            ):
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Please enter a valid 6-digit reset code."
+                }), 400
+
+            # Use same password requirements as registration
+            if len(new_password) < 8:
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Password must contain at least 8 characters."
+                }), 400
+
+            if not any(
+                character.isalpha()
+                for character in new_password
+            ):
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Password must contain at least one letter."
+                }), 400
+
+            if not any(
+                character.isdigit()
+                for character in new_password
+            ):
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Password must contain at least one number."
+                }), 400
+
+            user = users_collection.find_one({
+                "email": email
+            })
+
+            if (
+                not user or
+                user.get("is_demo", False)
+            ):
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Invalid or expired password reset request."
+                }), 400
+
+            saved_code_hash = str(
+                user.get(
+                    "password_reset_code_hash",
+                    ""
+                )
+            )
+
+            expires_at = user.get(
+                "password_reset_expires_at"
+            )
+
+            if not saved_code_hash or not expires_at:
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "Invalid or expired password reset request."
+                }), 400
+
+            # MongoDB may return a naive datetime depending
+            # on configuration, so normalize it safely.
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(
+                    tzinfo=timezone.utc
+                )
+
+            if datetime.now(timezone.utc) > expires_at:
+                users_collection.update_one(
+                    {
+                        "_id": user["_id"]
+                    },
+                    {
+                        "$unset": {
+                            "password_reset_code_hash": "",
+                            "password_reset_expires_at": ""
+                        }
+                    }
+                )
+
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "The password reset code has expired."
+                }), 400
+
+            submitted_code_hash = hashlib.sha256(
+                code.encode("utf-8")
+            ).hexdigest()
+
+            if not secrets.compare_digest(
+                submitted_code_hash,
+                saved_code_hash
+            ):
+                return jsonify({
+                    "success": False,
+                    "message":
+                        "The password reset code is incorrect."
+                }), 400
+
+            new_password_hash = (
+                bcrypt.hashpw(
+                    new_password.encode("utf-8"),
+                    bcrypt.gensalt()
+                )
+                .decode("utf-8")
+            )
+
+            users_collection.update_one(
+                {
+                    "_id": user["_id"]
+                },
+                {
+                    "$set": {
+                        "password_hash":
+                            new_password_hash
+                    },
+                    "$unset": {
+                        "password_reset_code_hash": "",
+                        "password_reset_expires_at": ""
+                    }
+                }
+            )
+
+            return jsonify({
+                "success": True,
+                "message":
+                    "Password reset successfully. You can now sign in."
+            }), 200
+
+        except PyMongoError as error:
+
+            print(
+                "MongoDB reset-password error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to reset password."
+            }), 500
+
+        except Exception as error:
+
+            print(
+                "Reset-password error:",
+                error
+            )
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to reset password."
+            }), 500
 
     @auth_bp.route("/me", methods=["GET"])
     @jwt_required()
