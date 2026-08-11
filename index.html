@@ -666,7 +666,44 @@
 
                 </div>
 
+                <!-- Reset verification code -->
 
+<div
+    class="auth-field hidden"
+    id="resetCodeField"
+>
+    <label for="resetCode">
+        6-Digit Reset Code
+    </label>
+
+    <div class="auth-input-wrapper">
+
+        <span
+            class="auth-input-icon"
+            aria-hidden="true"
+        >
+            🔢
+        </span>
+
+        <input
+            type="text"
+            id="resetCode"
+            name="resetCode"
+            placeholder="Enter 6-digit code"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+        >
+
+    </div>
+
+    <small
+        id="resetCodeError"
+        class="auth-field-error"
+        aria-live="polite"
+    ></small>
+
+</div>
                 <!-- New password -->
 
                 <div class="auth-field">

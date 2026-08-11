@@ -30,6 +30,7 @@
   "https://trustlens-ai-production-38ea.up.railway.app";
 
   const API_ENDPOINTS = Object.freeze({
+
   register:
     `${API_BASE_URL}/api/auth/register`,
 
@@ -39,10 +40,16 @@
   demo:
     `${API_BASE_URL}/api/auth/demo`,
 
+  forgotPassword:
+    `${API_BASE_URL}/api/auth/forgot-password`,
+
+  resetPassword:
+    `${API_BASE_URL}/api/auth/reset-password`,
+
   me:
     `${API_BASE_URL}/api/auth/me`
-});
 
+});
 
   const STORAGE_KEYS = Object.freeze({
     accessToken:
@@ -2018,152 +2025,558 @@
 
   function initialiseForgotPassword() {
 
-    const openButton =
-      byId("forgotPasswordButton");
+  const openButton =
+    byId("forgotPasswordButton");
+
+  const modal =
+    byId("forgotPasswordModal");
+
+  if (
+    !openButton ||
+    !modal
+  ) {
+    return;
+  }
 
 
-    const modal =
-      byId("forgotPasswordModal");
+  const overlay =
+    byId("forgotPasswordOverlay");
+
+  const closeButton =
+    byId("closeForgotPasswordModal");
+
+  const resetForm =
+    byId("forgotPasswordForm");
+
+  const resetEmail =
+    byId("resetEmail");
+
+  const resetCode =
+    byId("resetCode");
+
+  const resetPassword =
+    byId("resetPassword");
+
+  const confirmResetPassword =
+    byId("confirmResetPassword");
+
+  const resetCodeField =
+    byId("resetCodeField");
+
+  const resetNewPasswordField =
+    byId("resetNewPasswordField");
+
+  const resetConfirmPasswordField =
+    byId("resetConfirmPasswordField");
+
+  const resetButton =
+    byId("resetPasswordButton");
+
+  const resetEmailError =
+    byId("resetEmailError");
+
+  const resetCodeError =
+    byId("resetCodeError");
+
+  const resetPasswordError =
+    byId("resetPasswordError");
+
+  const confirmPasswordError =
+    byId("confirmResetPasswordError");
+
+  const resetMessage =
+    byId("resetPasswordMessage");
 
 
-    if (
-      !openButton ||
-      !modal
-    ) {
-
-      return;
-    }
+  let codeRequested =
+    false;
 
 
-    const overlay =
-      byId(
-        "forgotPasswordOverlay"
-      );
+  function resetModalState() {
 
+    codeRequested =
+      false;
 
-    const closeButton =
-      byId(
-        "closeForgotPasswordModal"
-      );
+    resetForm?.reset();
 
-
-    const resetForm =
-      byId(
-        "forgotPasswordForm"
-      );
-
-
-    const resetMessage =
-      byId(
-        "resetPasswordMessage"
-      );
-
-
-    function openModal() {
-
-      modal.classList.remove(
+    resetCodeField
+      ?.classList.add(
         "hidden"
       );
 
-
-      modal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      document.body.style
-        .overflow =
-        "hidden";
-
-
-      byId("resetEmail")
-        ?.focus();
-    }
-
-
-    function closeModal() {
-
-      modal.classList.add(
+    resetNewPasswordField
+      ?.classList.add(
         "hidden"
       );
 
-
-      modal.setAttribute(
-        "aria-hidden",
-        "true"
+    resetConfirmPasswordField
+      ?.classList.add(
+        "hidden"
       );
 
+    if (resetButton) {
 
-      document.body.style
-        .overflow =
-        "";
-
-
-      openButton.focus();
+      resetButton.textContent =
+        "Send Reset Code";
     }
 
+    showFormMessage(
+      resetMessage
+    );
 
-    openButton.addEventListener(
+    clearFieldState(
+      resetEmail,
+      resetEmailError
+    );
+
+    clearFieldState(
+      resetCode,
+      resetCodeError
+    );
+
+    clearFieldState(
+      resetPassword,
+      resetPasswordError
+    );
+
+    clearFieldState(
+      confirmResetPassword,
+      confirmPasswordError
+    );
+  }
+
+
+  function openModal() {
+
+    resetModalState();
+
+    modal.classList.remove(
+      "hidden"
+    );
+
+    modal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.style
+      .overflow =
+      "hidden";
+
+    resetEmail?.focus();
+  }
+
+
+  function closeModal() {
+
+    modal.classList.add(
+      "hidden"
+    );
+
+    modal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.style
+      .overflow =
+      "";
+
+    resetModalState();
+
+    openButton.focus();
+  }
+
+
+  openButton.addEventListener(
+    "click",
+    openModal
+  );
+
+
+  closeButton
+    ?.addEventListener(
       "click",
-      openModal
+      closeModal
     );
 
 
-    closeButton
-      ?.addEventListener(
-        "click",
-        closeModal
-      );
+  overlay
+    ?.addEventListener(
+      "click",
+      closeModal
+    );
 
 
-    overlay
-      ?.addEventListener(
-        "click",
-        closeModal
-      );
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Escape" &&
+        !modal.classList
+          .contains(
+            "hidden"
+          )
+      ) {
+
+        closeModal();
+      }
+    }
+  );
 
 
-    document.addEventListener(
-      "keydown",
-      (event) => {
+  resetForm
+    ?.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        const email =
+          normaliseEmail(
+            resetEmail?.value
+          );
+
+
+        /* =============================================
+           STEP 1 — REQUEST RESET CODE
+        ============================================= */
+
+        if (!codeRequested) {
+
+          clearFieldState(
+            resetEmail,
+            resetEmailError
+          );
+
+
+          if (
+            !email ||
+            !isValidEmail(
+              email
+            )
+          ) {
+
+            setFieldError(
+              resetEmail,
+              resetEmailError,
+              "Please enter a valid registered email address."
+            );
+
+            return;
+          }
+
+
+          setButtonLoading(
+            resetButton,
+            true,
+            "Sending code..."
+          );
+
+
+          try {
+
+            const data =
+              await apiRequest(
+                API_ENDPOINTS
+                  .forgotPassword,
+                {
+                  method:
+                    "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify({
+                      email
+                    })
+                }
+              );
+
+
+            codeRequested =
+              true;
+
+
+            resetEmail.readOnly =
+              true;
+
+
+            resetCodeField
+              ?.classList.remove(
+                "hidden"
+              );
+
+            resetNewPasswordField
+              ?.classList.remove(
+                "hidden"
+              );
+
+            resetConfirmPasswordField
+              ?.classList.remove(
+                "hidden"
+              );
+
+
+            showFormMessage(
+              resetMessage,
+              data.message ||
+                "Reset code created. Enter the code and your new password.",
+              "success"
+            );
+
+
+            if (resetButton) {
+
+              resetButton.textContent =
+                "Reset Password";
+            }
+
+
+            resetCode?.focus();
+
+
+          } catch (error) {
+
+            showFormMessage(
+              resetMessage,
+              error.message ||
+                "Unable to request password reset.",
+              "error"
+            );
+
+          } finally {
+
+            setButtonLoading(
+              resetButton,
+              false
+            );
+
+
+            if (
+              codeRequested &&
+              resetButton
+            ) {
+
+              resetButton.textContent =
+                "Reset Password";
+            }
+          }
+
+
+          return;
+        }
+
+
+        /* =============================================
+           STEP 2 — RESET PASSWORD
+        ============================================= */
+
+        const code =
+          String(
+            resetCode?.value ||
+            ""
+          ).trim();
+
+        const password =
+          String(
+            resetPassword?.value ||
+            ""
+          );
+
+        const confirmation =
+          String(
+            confirmResetPassword?.value ||
+            ""
+          );
+
+
+        let valid =
+          true;
+
+
+        clearFieldState(
+          resetCode,
+          resetCodeError
+        );
+
+        clearFieldState(
+          resetPassword,
+          resetPasswordError
+        );
+
+        clearFieldState(
+          confirmResetPassword,
+          confirmPasswordError
+        );
+
 
         if (
-          event.key === "Escape" &&
-          !modal.classList
-            .contains("hidden")
+          code.length !== 6 ||
+          !/^\d{6}$/.test(
+            code
+          )
         ) {
 
-          closeModal();
+          setFieldError(
+            resetCode,
+            resetCodeError,
+            "Enter the 6-digit reset code."
+          );
+
+          valid =
+            false;
         }
-      }
-    );
 
 
-    /*
-      Password reset API has not been created
-      in backend/routes/auth.py yet.
+        if (
+          !isAcceptedPassword(
+            password
+          )
+        ) {
 
-      Prevent frontend from pretending that a
-      backend password was changed.
-    */
+          setFieldError(
+            resetPassword,
+            resetPasswordError,
+            "Use at least 8 characters with at least one letter and one number."
+          );
 
-    resetForm
-      ?.addEventListener(
-        "submit",
-        (event) => {
+          valid =
+            false;
+        }
 
-          event.preventDefault();
+
+        if (
+          !confirmation
+        ) {
+
+          setFieldError(
+            confirmResetPassword,
+            confirmPasswordError,
+            "Please confirm your new password."
+          );
+
+          valid =
+            false;
+
+        } else if (
+          password !==
+          confirmation
+        ) {
+
+          setFieldError(
+            confirmResetPassword,
+            confirmPasswordError,
+            "Passwords do not match."
+          );
+
+          valid =
+            false;
+        }
+
+
+        if (!valid) {
+          return;
+        }
+
+
+        setButtonLoading(
+          resetButton,
+          true,
+          "Updating password..."
+        );
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              API_ENDPOINTS
+                .resetPassword,
+              {
+                method:
+                  "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    email,
+                    code,
+                    new_password:
+                      password
+                  })
+              }
+            );
 
 
           showFormMessage(
             resetMessage,
-            "Backend password reset will be enabled in the next authentication step.",
-            "info"
+            data.message ||
+              "Password reset successfully.",
+            "success"
+          );
+
+
+          removeStorageKey(
+            STORAGE_KEYS.accessToken
+          );
+
+          removeStorageKey(
+            STORAGE_KEYS.currentUser
+          );
+
+
+          window.setTimeout(
+            () => {
+
+              closeModal();
+
+              if (byId("loginEmail")) {
+
+                byId(
+                  "loginEmail"
+                ).value =
+                  email;
+              }
+
+              showFormMessage(
+                byId(
+                  "loginMessage"
+                ),
+                "Password updated. Sign in with your new password.",
+                "success"
+              );
+
+            },
+            1200
+          );
+
+
+        } catch (error) {
+
+          showFormMessage(
+            resetMessage,
+            error.message ||
+              "Unable to reset password.",
+            "error"
+          );
+
+          setButtonLoading(
+            resetButton,
+            false
           );
         }
-      );
-  }
+      }
+    );
+}
 
 
   /* =======================================================
