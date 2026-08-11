@@ -2040,10 +2040,7 @@ function getTrustLensAccessToken() {
   */
 
   const tokenKeys = [
-    "trustLensAccessToken",
-    "accessToken",
-    "access_token",
-    "token"
+    "trustLensAccessToken"
   ];
 
 
@@ -2233,7 +2230,7 @@ async function saveScanToBackend(
 
 
     throw new Error(
-      "Could not connect to the TrustLens backend. Please try again."
+      "Could not connect to the TrustLens backend. Please try again shortly."
     );
   }
 
