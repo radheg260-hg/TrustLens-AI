@@ -87,12 +87,22 @@ Look for:
 - credential harvesting
 - social engineering
 - unusual pressure
+
 - attempts to redirect users to suspicious websites
 - impersonation of delivery companies, banks, government agencies or brands
 - fake package or delivery problems
 - requests to confirm addresses or personal information through unfamiliar links
 - suspicious domains pretending to belong to known brands
 - OCR text where a URL is partially damaged or separated by spaces
+
+- suspicious or misleading domains
+- brand impersonation in domains or subdomains
+- credential-bait words such as login, verify, account, secure, update
+- suspicious URL shorteners
+- non-secure HTTP links
+- raw IP-address URLs
+- unusually long or hyphen-heavy domains
+- misleading paths that suggest verification, banking, rewards or account recovery
 
 Return ONLY valid JSON.
 
@@ -309,15 +319,30 @@ def analyze_message_with_ai(
     try:
 
 
-        source_context = (
+        if content_type == "screenshot":
+
+          source_context = (
         "The following text was extracted from a screenshot using OCR. "
         "OCR may contain missing spaces, broken URLs, spelling errors, "
-    "misread characters, or incomplete sentences. Infer intent carefully "
-    "from the available evidence."
-        if content_type == "screenshot"
-        else
+        "misread characters, or incomplete sentences. "
+        "Infer intent carefully from the available evidence."
+    )
+
+        elif content_type == "link":
+
+          source_context = (
+        "The following content is a website URL submitted for fraud analysis. "
+        "Analyze the visible domain, subdomains, path, wording, "
+        "impersonation patterns, credential-bait language, suspicious "
+        "redirect patterns, and misleading brand references. "
+        "Do not guarantee that a URL is safe solely from its text."
+    )
+
+        else:
+
+          source_context = (
         "The following content was entered directly by the user."
-)
+    )
 
         prompt = (
     FRAUD_ANALYSIS_PROMPT
