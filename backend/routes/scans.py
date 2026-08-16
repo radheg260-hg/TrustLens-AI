@@ -435,7 +435,7 @@ def init_scan_routes(
             ai_result = None
             if scan_type in {
     "message",
-    "screenshot"
+    "screenshot",
     "link"
 }:
 
