@@ -433,16 +433,20 @@ def init_scan_routes(
             }
 
 
-            if scan_type == "message":
+            if scan_type in {
+    "message",
+    "screenshot"
+}:
 
-                ai_result = (
-                    analyze_message_with_ai(
-                        original_content
-                    )
-                )
+             ai_result = (
+        analyze_message_with_ai(
+            original_content,
+              content_type=scan_type
+        )
+    )
 
 
-                if ai_result.get(
+            if ai_result.get(
                     "ai_available"
                 ):
 

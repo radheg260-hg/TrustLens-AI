@@ -57,7 +57,8 @@ FRAUD_ANALYSIS_PROMPT = """
 You are the AI fraud-analysis component of TrustLens.
 
 Your task is to analyze the meaning, context, and intent of
-a user-provided message.
+user-provided text. The text may come directly from a message
+or may have been extracted from a screenshot using OCR.
 
 You must distinguish between:
 
@@ -87,6 +88,11 @@ Look for:
 - social engineering
 - unusual pressure
 - attempts to redirect users to suspicious websites
+- impersonation of delivery companies, banks, government agencies or brands
+- fake package or delivery problems
+- requests to confirm addresses or personal information through unfamiliar links
+- suspicious domains pretending to belong to known brands
+- OCR text where a URL is partially damaged or separated by spaces
 
 Return ONLY valid JSON.
 
@@ -277,7 +283,8 @@ def normalize_ai_result(
 # ==========================================================
 
 def analyze_message_with_ai(
-    content
+    content,
+    content_type="message"
 ):
 
     text = str(
@@ -301,11 +308,24 @@ def analyze_message_with_ai(
 
     try:
 
+
+        source_context = (
+        "The following text was extracted from a screenshot using OCR. "
+        "OCR may contain missing spaces, broken URLs, spelling errors, "
+    "misread characters, or incomplete sentences. Infer intent carefully "
+    "from the available evidence."
+        if content_type == "screenshot"
+        else
+        "The following content was entered directly by the user."
+)
+
         prompt = (
-            FRAUD_ANALYSIS_PROMPT
-            + "\n\nMESSAGE TO ANALYZE:\n"
-            + text
-        )
+    FRAUD_ANALYSIS_PROMPT
+    + "\n\nSOURCE CONTEXT:\n"
+    + source_context
+    + "\n\nCONTENT TO ANALYZE:\n"
+    + text
+)
 
 
         response = (
