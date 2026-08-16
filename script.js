@@ -1565,35 +1565,85 @@ function analyzeTextForFraud(
 
 
   sensitiveRequestRules.forEach(
-    (rule) => {
+  (rule) => {
 
-      const hasSensitiveTerm =
-        rule.terms.some(
-          (term) =>
-            cleanText.includes(term)
-        );
+    rule.terms.forEach(
+      (term) => {
 
-
-      const hasRequestWord =
-        rule.requestWords.some(
-          (word) =>
-            cleanText.includes(word)
-        );
+        const escapedTerm =
+          term.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+          );
 
 
-      if (
-        hasSensitiveTerm &&
-        hasRequestWord
-      ) {
+        /* ---------------------------------------------
+           Protective language
 
-        score += rule.points;
+           Examples:
+           "Never share your OTP"
+           "Do not provide your CVV"
+           "Don't tell anyone your PIN"
+        --------------------------------------------- */
 
-        reasons.push(
-          rule.reason
-        );
+        const protectivePattern =
+          new RegExp(
+            `\\b(?:never|do not|don't|dont)\\s+` +
+            `(?:share|send|tell|provide|give|enter|submit|forward)\\s+` +
+            `(?:anyone\\s+)?(?:your\\s+|the\\s+)?` +
+            `${escapedTerm}\\b`,
+            "i"
+          );
+
+
+        if (
+          protectivePattern.test(
+            cleanText
+          )
+        ) {
+          return;
+        }
+
+
+        /* ---------------------------------------------
+           Actual request language
+
+           Examples:
+           "Send me your OTP"
+           "Provide your CVV"
+           "Enter your password"
+           "Share the verification code"
+        --------------------------------------------- */
+
+        const requestPattern =
+          new RegExp(
+            `\\b(?:send|share|tell|provide|give|enter|submit|forward|confirm)\\s+` +
+            `(?:me\\s+|us\\s+)?` +
+            `(?:your\\s+|the\\s+)?` +
+            `${escapedTerm}\\b`,
+            "i"
+          );
+
+
+        if (
+          requestPattern.test(
+            cleanText
+          )
+        ) {
+
+          score +=
+            rule.points;
+
+          reasons.push(
+            rule.reason
+          );
+        }
+
       }
-    }
-  );
+    );
+
+  }
+);
 
 
   /* =====================================================
