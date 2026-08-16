@@ -432,7 +432,7 @@ def init_scan_routes(
                 "reasons": []
             }
 
-
+            ai_result = None
             if scan_type in {
     "message",
     "screenshot"
