@@ -6848,3 +6848,127 @@ select:focus-visible {
     padding: 0;
   }
 }
+
+/* =========================================================
+   TRUSTLENS AUTH — MOBILE POLISH
+   Desktop/laptop layout remains unchanged.
+========================================================= */
+
+@media (max-width: 820px) {
+
+  .auth-form-section {
+    min-height: 100svh;
+    justify-content: flex-start;
+    padding: 22px 20px 28px;
+  }
+
+  .auth-mobile-brand {
+    margin-bottom: 20px;
+  }
+
+  .auth-form-wrapper {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .auth-form-header {
+    margin-bottom: 18px;
+  }
+
+  .auth-form-header h2 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .auth-form-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .auth-form {
+    gap: 12px;
+  }
+
+  .auth-field {
+    gap: 5px;
+  }
+
+  .auth-input-wrapper input {
+    min-height: 50px;
+  }
+
+  .auth-options-row {
+    margin-top: 1px;
+  }
+
+  .auth-form-message {
+    min-height: 0;
+  }
+
+  .auth-form-message:not(:empty) {
+    margin-top: 1px;
+    padding: 9px 11px;
+  }
+
+  .auth-submit-button {
+    min-height: 50px;
+  }
+
+  .auth-divider {
+    margin: 18px 0 13px;
+  }
+
+  .auth-secondary-link {
+    min-height: 46px;
+  }
+
+  .demo-login-card {
+    margin-top: 14px;
+    padding: 14px;
+  }
+
+  .demo-login-button {
+    margin-top: 10px;
+    min-height: 42px;
+  }
+
+  .auth-warning {
+    margin-top: 14px;
+  }
+}
+
+
+@media (max-width: 420px) {
+
+  .auth-form-section {
+    padding: 18px 14px 24px;
+  }
+
+  .auth-mobile-brand {
+    margin-bottom: 18px;
+  }
+
+  .auth-form-header h2 {
+    font-size: 26px;
+  }
+
+  .auth-form-header {
+    margin-bottom: 16px;
+  }
+
+  .auth-input-wrapper input {
+    min-height: 48px;
+  }
+
+  .auth-submit-button {
+    min-height: 48px;
+  }
+
+  .auth-secondary-link {
+    min-height: 44px;
+  }
+
+  .demo-login-card {
+    padding: 13px;
+  }
+}
