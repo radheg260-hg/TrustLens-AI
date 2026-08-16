@@ -1457,30 +1457,176 @@ function analyzeTextForFraud(
   const reasons = [];
 
 
-  messageRules.forEach(
+  /* =====================================================
+     SENSITIVE INFORMATION REQUEST DETECTION
+     Detect requests, not simple mentions.
+  ===================================================== */
+
+  const sensitiveRequestRules = [
+
+    {
+      terms: [
+        "otp",
+        "one time password",
+        "verification code"
+      ],
+
+      requestWords: [
+        "send",
+        "share",
+        "tell",
+        "provide",
+        "give",
+        "enter",
+        "submit",
+        "forward"
+      ],
+
+      points: 25,
+
+      reason:
+        "The content asks for an OTP or verification code."
+    },
+
+    {
+      terms: [
+        "password",
+        "passcode",
+        "login password"
+      ],
+
+      requestWords: [
+        "send",
+        "share",
+        "tell",
+        "provide",
+        "give",
+        "enter",
+        "submit"
+      ],
+
+      points: 25,
+
+      reason:
+        "The content requests a password or login credential."
+    },
+
+    {
+      terms: [
+        "upi pin",
+        "atm pin",
+        "pin number",
+        "pin"
+      ],
+
+      requestWords: [
+        "send",
+        "share",
+        "tell",
+        "provide",
+        "give",
+        "enter",
+        "submit"
+      ],
+
+      points: 25,
+
+      reason:
+        "The content requests a PIN."
+    },
+
+    {
+      terms: [
+        "cvv",
+        "card number",
+        "debit card details",
+        "credit card details",
+        "bank details"
+      ],
+
+      requestWords: [
+        "send",
+        "share",
+        "tell",
+        "provide",
+        "give",
+        "enter",
+        "submit",
+        "confirm"
+      ],
+
+      points: 25,
+
+      reason:
+        "The content requests card or banking information."
+    }
+
+  ];
+
+
+  sensitiveRequestRules.forEach(
     (rule) => {
 
-      const detected =
-        rule.keywords.some(
-          (keyword) =>
-            cleanText.includes(
-              keyword
-            )
+      const hasSensitiveTerm =
+        rule.terms.some(
+          (term) =>
+            cleanText.includes(term)
         );
 
 
-      if (detected) {
+      const hasRequestWord =
+        rule.requestWords.some(
+          (word) =>
+            cleanText.includes(word)
+        );
 
-        score +=
-          rule.points;
+
+      if (
+        hasSensitiveTerm &&
+        hasRequestWord
+      ) {
+
+        score += rule.points;
 
         reasons.push(
           rule.reason
         );
       }
-
     }
   );
+
+
+  /* =====================================================
+     NORMAL FRAUD RULES
+     Skip first 4 old sensitive keyword rules because
+     they are handled contextually above.
+  ===================================================== */
+
+  messageRules
+    .slice(4)
+    .forEach(
+      (rule) => {
+
+        const detected =
+          rule.keywords.some(
+            (keyword) =>
+              cleanText.includes(
+                keyword
+              )
+          );
+
+
+        if (detected) {
+
+          score +=
+            rule.points;
+
+          reasons.push(
+            rule.reason
+          );
+        }
+      }
+    );
 
 
   const linkResult =
@@ -1535,7 +1681,6 @@ function analyzeTextForFraud(
 
   };
 }
-
 
 /* =========================================================
    LINK DETECTION IN MESSAGE
